@@ -1,5 +1,5 @@
 <?php
-namespace Rolice\Econt\Component;
+namespace Rolice\Econt\Components;
 
 class Payment implements ComponentInterface
 {

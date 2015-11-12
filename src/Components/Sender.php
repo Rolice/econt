@@ -1,5 +1,5 @@
 <?php
-namespace Rolice\Econt\Component;
+namespace Rolice\Econt\Components;
 
 class Sender extends Side
 {

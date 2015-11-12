@@ -1,5 +1,5 @@
 <?php
-namespace Rolice\Econt\Component;
+namespace Rolice\Econt\Components;
 
 final class Loadings implements ComponentInterface
 {

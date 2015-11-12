@@ -57,7 +57,7 @@ class Econt
      * @return string Serialized result in XML format.
      * @throws EcontException
      */
-    public static function build(array $data, $type = RequestType::NONE, $root = null)
+    protected static function build(array $data, $type = RequestType::NONE, $root = null)
     {
         $data['client'] = [
             'username' => self::$username,
@@ -102,7 +102,7 @@ class Econt
      * @return string Unserialized XML data in PHP
      * @throws EcontException
      */
-    public static function parse($response)
+    protected static function parse($response)
     {
         $parser = new XML_Unserializer();
         $status = $parser->unserialize($response);
@@ -129,7 +129,7 @@ class Econt
      * @param string $request The serialized XML content of the request.
      * @return string Raw response of the Econt servers to the given request.
      */
-    public static function request($endpoint, $request)
+    protected function call($endpoint, $request)
     {
         $ch = curl_init($endpoint);
 
@@ -154,5 +154,21 @@ class Econt
     public final function order(Sender $sender, Receiver $receiver, Shipment $shipment)
     {
 
+    }
+
+    public final function request($type, $data)
+    {
+        $request = [
+            'client' => [
+                'username' => $this->username,
+                'password' => $this->password,
+            ],
+
+            'request_type' => $type,
+
+            $data
+        ];
+
+        die(var_dump($request));
     }
 }
