@@ -23,7 +23,8 @@
   "autoload": {
     "psr-4": {
       "Rolice\\Econt\\": "src",
-      "Rolice\\Econt\\Component\\": "src/Component/",
+      "Rolice\\Econt\\Commands\\": "src/Commands/",
+      "Rolice\\Econt\\Components\\": "src/Components/",
       "Rolice\\Econt\\Exceptions\\": "src/exceptions/"
     }
   },
