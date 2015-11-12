@@ -84,16 +84,12 @@ class Econt
 
         try {
             $xml = simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA);
-
-            // Fix for empty values in XML
-            $json = json_encode((array) $xml);
-//            $json = str_replace(':{}',':null', $json);
-//            $json = str_replace(':[]',':null', $json);
+            $result = json_decode(json_encode((array) $xml), 1);
         } catch (Exception $e) {
             throw new EcontException('Failed To Parse XML response.');
         }
 
-        return json_decode($json, 1);   // Work around to accept xml input
+        return $result;
     }
 
     /**
@@ -121,7 +117,7 @@ class Econt
 
     }
 
-    public final function request($type, $data)
+    public final function request($type, array $data = [])
     {
         $request = array_merge($data, [
             'client' => [
@@ -135,6 +131,13 @@ class Econt
         $this->build($xml, $request);
         $response = $this->parse($this->call(Endpoint::SERVICE, $xml->asXML()));
 
-        return $response;
+        if(isset($response['error'])) {
+            $message = isset($response['error']['message']) ? $response['error']['message'] : null;
+            $code = isset($response['error']['code']) ? $response['error']['code'] : null;
+
+            throw new EcontException($message, $code);
+        }
+
+        return isset($response[$type]) ? $response[$type] : $response;
     }
 }
