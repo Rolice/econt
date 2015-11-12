@@ -138,6 +138,6 @@ class Econt
             throw new EcontException($message, $code);
         }
 
-        return isset($response[$type]) ? $response[$type] : $response;
+        return $response;
     }
 }
