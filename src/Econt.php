@@ -133,7 +133,8 @@ class Econt
 
         $xml = new SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><request/>');
         $this->build($xml, $request);
+        $response = $this->parse($this->call(Endpoint::SERVICE, $xml->asXML()));
 
-        return $this->call(Endpoint::SERVICE, $xml->asXML());
+        return $response;
     }
 }
