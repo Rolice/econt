@@ -145,7 +145,7 @@ class Econt
     {
         $result = $this->request(RequestType::ZONES);
 
-        if(!issset($result['zones']['e'])) {
+        if(!isset($result['zones']['e'])) {
             throw new EcontException('Could not receive correct zones.');
         }
 
