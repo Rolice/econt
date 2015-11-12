@@ -140,4 +140,15 @@ class Econt
 
         return $response;
     }
+
+    public final function zones()
+    {
+        $result = $this->request(RequestType::ZONES);
+
+        if(!issset($result['zones']['e'])) {
+            throw new EcontException('Could not receive correct zones.');
+        }
+
+        return $result['zones']['e'];
+    }
 }
