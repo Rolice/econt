@@ -1,5 +1,5 @@
 <?php
-namespace CloudCart\Econt\Component;
+namespace Rolice\Econt\Component;
 
 class Payment implements ComponentInterface
 {

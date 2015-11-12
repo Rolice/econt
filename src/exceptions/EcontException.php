@@ -1,5 +1,5 @@
 <?php
-namespace CloudCart\Econt\Exceptions;
+namespace Rolice\\Econt\Exceptions;
 
 use Exception;
 

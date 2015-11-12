@@ -1,32 +1,31 @@
 <?php
-namespace CloudCart\Econt;
+namespace Rolice\Econt;
 
 use App;
 use Config;
 
-use CloudCart\Econt\Component\Receiver;
-use CloudCart\Econt\Component\Sender;
-use CloudCart\Econt\Component\Shipment;
-use CloudCart\Econt\Exceptions\EcontException;
+use Rolice\Econt\Component\Receiver;
+use Rolice\Econt\Component\Sender;
+use Rolice\Econt\Component\Shipment;
+use Rolice\Econt\Exceptions\EcontException;
 
 /**
  * Class Econt
  * Interface exported by this package to allow Econt integration.
- * @package CloudCart\Econt
+ * @package Rolice\Econt
  * @version 0.1
- * @license CloudCart License
  * @access public
  */
 class Econt
 {
     /**
-     * The username of the Econt profile of CloudCart (whole platform account)
+     * The username of the Econt profile (whole platform account)
      * @var string
      */
     protected $username;
 
     /**
-     * The password of the Econt profile of CloudCart (whole platform account)
+     * The password of the Econt profile (whole platform account)
      * @var string
      */
     protected $password;

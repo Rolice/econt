@@ -1,14 +1,13 @@
 <?php
-namespace CloudCart\Econt;
+namespace Rolice\Econt;
 
 use Illuminate\Support\ServiceProvider;
 
 /**
  * EcontServiceProvider for Laravel 5.1+
  *
- * @package    CloudCart\Econt
+ * @package    Rolice\Econt
  * @version    1.0
- * @license    CloudCart License
  */
 class EcontServiceProvider extends ServiceProvider
 {

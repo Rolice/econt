@@ -1,14 +1,13 @@
 <?php
-namespace CloudCart\Econt;
+namespace Rolice\Econt;
 
-use CloudCart\Econt\Exceptions\EcontException;
+use Rolice\Econt\Exceptions\EcontException;
 
 /**
  * Class RequestType
  * Class with constants, providing valid, predefined Econt request types.
- * @package CloudCart\Econt
+ * @package Rolice\Econt
  * @version 0.1
- * @license CloudCart License
  * @access public
  */
 class RequestType

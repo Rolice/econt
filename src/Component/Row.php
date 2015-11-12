@@ -1,12 +1,11 @@
 <?php
-namespace CloudCart\Econt\Component;
+namespace Rolice\Econt\Component;
 
 /**
  * Class Row
  * Class representing single load for courier service
- * @package CloudCart\Econt\Component
+ * @package Rolice\Econt\Component
  * @version 0.1
- * @license CloudCart License
  * @access public
  */
 class Row implements ComponentInterface

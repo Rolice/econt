@@ -1,14 +1,13 @@
 <?php
-namespace CloudCart\Econt;
+namespace Rolice\Econt;
 
-use CloudCart\Econt\Exceptions\EcontException;
+use Rolice\Econt\Exceptions\EcontException;
 
 /**
  * Class Endpoint
  * Class with constants, providing end-point addresses to Econt services.
- * @package CloudCart\Econt
+ * @package Rolice\Econt
  * @version 0.1
- * @license CloudCart License
  * @access public
  */
 class Endpoint

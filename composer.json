@@ -8,7 +8,7 @@
   "authors": [
     {
       "name": "Lyubomir Gardev",
-      "email": "l.gardev@cloudcart.com"
+      "email": "rolice@intellisys.org"
     }
   ],
   "require": {
@@ -22,12 +22,12 @@
   },
   "autoload": {
     "psr-4": {
-      "CloudCart\\Econt\\": "src",
-      "CloudCart\\Econt\\Component\\": "src/Component/",
-      "CloudCart\\Econt\\Exceptions\\": "src/exceptions/"
+      "Rolice\\Econt\\": "src",
+      "Rolice\\Econt\\Component\\": "src/Component/",
+      "Rolice\\Econt\\Exceptions\\": "src/exceptions/"
     }
   },
   "autoload-dev": {
-    "psr-4": { "CloudCart\\Econt\\Test\\": "tests/" }
+    "psr-4": { "Rolice\\Econt\\Test\\": "tests/" }
   }
 }
