@@ -1,12 +1,11 @@
 <?php
 namespace Rolice\Econt;
 
-use SimpleXMLElement;
-use Nathanmac\Utilities\Parser\Parser;
 
 use App;
 use Config;
-
+use Exception;
+use SimpleXMLElement;
 use Rolice\Econt\Exceptions\EcontException;
 
 /**
@@ -79,7 +78,22 @@ class Econt
      */
     protected function parse($response)
     {
-        return Parser::xml($response);
+        if (!$response) {
+            throw new EcontException('Empty response cannot be parsed.');
+        }
+
+        try {
+            $xml = simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA);
+
+            // Fix for empty values in XML
+            $json = json_encode((array) $xml);
+//            $json = str_replace(':{}',':null', $json);
+//            $json = str_replace(':[]',':null', $json);
+        } catch (Exception $e) {
+            throw new EcontException('Failed To Parse XML response.');
+        }
+
+        return json_decode($json, 1);   // Work around to accept xml input
     }
 
     /**
