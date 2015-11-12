@@ -158,16 +158,14 @@ class Econt
 
     public final function request($type, $data)
     {
-        $request = [
+        $request = array_merge($data, [
             'client' => [
                 'username' => $this->username,
                 'password' => $this->password,
             ],
 
             'request_type' => $type,
-
-            $data
-        ];
+        ]);
 
         die(var_dump($request));
     }
