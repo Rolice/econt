@@ -154,7 +154,7 @@ class Econt extends Migration {
 
             $table->primary('id');
 
-            DB::statement('ALTER TABLE `econt_offices` ADD COLUMN `location` POINT NULL DEFAULT NULL')
+            DB::statement('ALTER TABLE econt_offices ADD COLUMN location POINT NULL DEFAULT NULL');
         });
     }
 
@@ -166,6 +166,6 @@ class Econt extends Migration {
     public function down()
     {
         //Schema::setConnection(DB::connection('auth'))->drop('invoicing');
-        DB::statement('ALTER TABLE `econt_offices` DROP COLUMN `location` RESTRICT');
+        DB::statement('ALTER TABLE econt_offices DROP COLUMN location RESTRICT');
     }
 }
