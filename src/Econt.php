@@ -58,7 +58,7 @@ class Econt
      */
     protected static function build(array $data)
     {
-        SimpleXMLElement::
+        //SimpleXMLElement::
     }
 
     /**
