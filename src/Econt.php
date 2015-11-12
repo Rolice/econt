@@ -1,12 +1,11 @@
 <?php
 namespace Rolice\Econt;
 
+use SimpleXMLElement;
+
 use App;
 use Config;
 
-use Rolice\Econt\Component\Receiver;
-use Rolice\Econt\Component\Sender;
-use Rolice\Econt\Component\Shipment;
 use Rolice\Econt\Exceptions\EcontException;
 
 /**
@@ -57,43 +56,9 @@ class Econt
      * @return string Serialized result in XML format.
      * @throws EcontException
      */
-    protected static function build(array $data, $type = RequestType::NONE, $root = null)
+    protected static function build(array $data)
     {
-        $data['client'] = [
-            'username' => self::$username,
-            'password' => self::$password,
-        ];
-        $data['system'] = [
-            'validate' => 0,
-            'response_type' => 'XML',
-        ];
-
-        if ($type) {
-            $data['request_type'] = $type;
-        }
-
-        // Serialization
-
-        $options = [
-            "indent" => "\t",
-            "linebreak" => "\n",
-            "rootName" => $root ?: $type,
-            "addDecl" => true,
-            "addDoctype" => false,
-            "doctype" => [
-                'uri' => 'http://pear.php.net/dtd/package-1.0',
-                'id' => '-//PHP//PEAR/DTD PACKAGE 0.1'
-            ],
-        ];
-
-        $serializer = new XML_Serializer($options);
-        $status = $serializer->serialize($data);
-
-        if (PEAR::isError($status)) {
-            throw new EcontException('Failed serialize registration request.');
-        }
-
-        return $serializer->getSerializedData();
+        SimpleXMLElement::
     }
 
     /**
@@ -163,10 +128,12 @@ class Econt
                 'username' => $this->username,
                 'password' => $this->password,
             ],
-
             'request_type' => $type,
         ]);
 
-        die(var_dump($request));
+        $xml = new SimpleXMLElement('request');
+        array_walk_recursive($request, [$xml, 'addchild']);
+
+        die($xml->asXML());
     }
 }
