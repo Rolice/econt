@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Rolice\Econt\Exceptions\EcontException;
 use Rolice\Econt\ImportInterface;
 
-class Zone extends Model implements ImportInterface
+class Region extends Model implements ImportInterface
 {
 
     /**
@@ -22,7 +22,7 @@ class Zone extends Model implements ImportInterface
      *
      * @var string
      */
-    protected $table = 'econt_zones';
+    protected $table = 'econt_regions';
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -63,7 +63,7 @@ class Zone extends Model implements ImportInterface
             return false;
         }
 
-        $keys = ['id', 'name', 'name_en', 'national', 'is_ee', 'updated_time'];
+        $keys = ['id', 'name', 'code', 'id_city', 'updated_time'];
 
         foreach ($keys as $key) {
             if (!isset($data[$key])) {
@@ -71,7 +71,7 @@ class Zone extends Model implements ImportInterface
             }
         }
 
-        if (0 >= (int)$data['id']) {
+        if (0 >= (int)$data['id'] || 0 >= (int)$data['code'] || 0 >= $data['id_city']) {
             return false;
         }
 
@@ -84,15 +84,14 @@ class Zone extends Model implements ImportInterface
             return;
         }
 
-        $this->id = (int) $data['id'];
+        $this->id = (int)$data['id'];
         $this->name = $data['name'];
-        $this->name_en = $data['name_en'];
-        $this->national = !!$data['national'];
-        $this->is_ee = !!$data['is_ee'];
+        $this->code = (int) $data['code'];
+        $this->id_city = (int) $data['id_city'];
         $this->updated_time = $data['updated_time'] && '0000-00-00 00:00:00' != $data['updated_time'] ? $data['updated_time'] : null;
 
         if (!$this->save()) {
-            throw new EcontException("Error importing zone {$this->id} (named: {$this->name}).");
+            throw new EcontException("Error importing region {$this->id} (named: {$this->name}).");
         }
     }
 

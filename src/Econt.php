@@ -59,8 +59,8 @@ class Econt
      */
     protected function build(SimpleXMLElement $xml, array $data)
     {
-        foreach($data as $key => $value) {
-            if(!is_scalar($value)) {
+        foreach ($data as $key => $value) {
+            if (!is_scalar($value)) {
                 $nested = $xml->addChild($key);
                 $this->build($nested, $value);
                 continue;
@@ -84,7 +84,7 @@ class Econt
 
         try {
             $xml = simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA);
-            $result = json_decode(json_encode((array) $xml), 1);
+            $result = json_decode(json_encode((array)$xml), 1);
         } catch (Exception $e) {
             throw new EcontException('Failed To Parse XML response.');
         }
@@ -119,6 +119,9 @@ class Econt
 
     public final function request($type, array $data = [])
     {
+        ini_set('memory_limit', '2G');
+        ini_set('max_execution_time', '0');
+
         $request = array_merge($data, [
             'client' => [
                 'username' => $this->username,
@@ -131,7 +134,7 @@ class Econt
         $this->build($xml, $request);
         $response = $this->parse($this->call(Endpoint::SERVICE, $xml->asXML()));
 
-        if(isset($response['error'])) {
+        if (isset($response['error'])) {
             $message = isset($response['error']['message']) ? $response['error']['message'] : null;
             $code = isset($response['error']['code']) ? $response['error']['code'] : null;
 
@@ -145,10 +148,35 @@ class Econt
     {
         $result = $this->request(RequestType::ZONES);
 
-        if(!isset($result['zones']['e'])) {
+        if (!isset($result['zones']['e'])) {
             throw new EcontException('Could not receive correct zones.');
         }
 
         return $result['zones']['e'];
+    }
+
+    public final function settlements()
+    {
+        $result = $this->request(
+            RequestType::CITIES,
+            [RequestType::CITIES => ['id_zone' => 'all', 'report_type' => 'short']]
+        );
+
+        if (!isset($result['cities']['e'])) {
+            throw new EcontException('Could not receive correct zones.');
+        }
+
+        return $result['cities']['e'];
+    }
+
+    public final function regions()
+    {
+        $result = $this->request(RequestType::REGIONS);
+
+        if (!isset($result['cities_regions']['e'])) {
+            throw new EcontException('Could not receive correct zones.');
+        }
+
+        return $result['cities_regions']['e'];
     }
 }

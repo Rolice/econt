@@ -1,7 +1,13 @@
 <?php
 namespace Rolice\Econt\Commands;
 
+use App;
 use Illuminate\Console\Command;
+
+use Rolice\Econt\Models\City;
+use Rolice\Econt\Models\Country;
+use Rolice\Econt\Models\Region;
+use Rolice\Econt\Models\Zone;
 
 class Sync extends Command
 {
@@ -27,6 +33,29 @@ class Sync extends Command
      */
     public function handle()
     {
-        $this->comment(PHP_EOL . 'ECONT!' . PHP_EOL);
+        $this->comment(PHP_EOL . 'Importing zones... Please wait.' . PHP_EOL);
+
+        foreach (App::make('Econt')->zones() as $zone) {
+            (new Zone)->import($zone);
+        }
+
+        $this->comment(PHP_EOL . 'Zones imported successfully.' . PHP_EOL);
+
+        $this->comment(PHP_EOL . 'Importing settlements... Please wait.' . PHP_EOL);
+
+        foreach (App::make('Econt')->settlements() as $settlement) {
+            $model = 0 >= $settlement->id_country ? new Country : new City;
+            $model->import($settlement);
+        }
+
+        $this->comment(PHP_EOL . 'Settlements imported successfully.' . PHP_EOL);
+
+        $this->comment(PHP_EOL . 'Importing regions... Please wait.' . PHP_EOL);
+
+        foreach (App::make('Econt')->regions() as $region) {
+            (new Region)->import($region);
+        }
+
+        $this->comment(PHP_EOL . 'Regions imported successfully.' . PHP_EOL);
     }
 }

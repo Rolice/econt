@@ -18,6 +18,7 @@ class EcontStreets extends Migration
             $table->string('name');
             $table->string('name_en');
             $table->unsignedInteger('city_post_code')->index('idx_city_post_code');
+            $table->datetime('update_time')->nullable()->default(null);
             $table->timestamps();
 
             $table->primary('id');

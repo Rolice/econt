@@ -16,4 +16,11 @@ interface ImportInterface {
      */
     public function import(array $data);
 
+    /**
+     * Validates an input data against model expectations
+     * @param array $data The input data for the import validation
+     * @return bool True if input data is in valid format, false otherwise
+     */
+    public function validateImport(array $data);
+
 }
