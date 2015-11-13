@@ -163,7 +163,7 @@ class Econt
         );
 
         if (!isset($result['cities']['e'])) {
-            throw new EcontException('Could not receive correct zones.');
+            throw new EcontException('Could not receive correct settlements.');
         }
 
         return $result['cities']['e'];
@@ -174,7 +174,7 @@ class Econt
         $result = $this->request(RequestType::REGIONS);
 
         if (!isset($result['cities_regions']['e'])) {
-            throw new EcontException('Could not receive correct zones.');
+            throw new EcontException('Could not receive correct regions.');
         }
 
         return $result['cities_regions']['e'];

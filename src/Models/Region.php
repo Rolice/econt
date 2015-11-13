@@ -85,9 +85,9 @@ class Region extends Model implements ImportInterface
         }
 
         $this->id = (int)$data['id'];
-        $this->name = $data['name'];
+        $this->name = $data['name'] ?: null;
         $this->code = (int) $data['code'];
-        $this->id_city = (int) $data['id_city'];
+        $this->city_id = (int) $data['id_city'];
         $this->updated_time = $data['updated_time'] && '0000-00-00 00:00:00' != $data['updated_time'] ? $data['updated_time'] : null;
 
         if (!$this->save()) {
