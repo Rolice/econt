@@ -1,6 +1,8 @@
 <?php
 namespace Rolice\Econt\Models;
 
+use Config;
+
 use Illuminate\Database\Eloquent\Model;
 use Rolice\Econt\ImportInterface;
 
@@ -55,13 +57,6 @@ class Zone extends Model implements ImportInterface
 
     public function import(array $data)
     {
-        foreach($data as $zone) {
-            $rec = new self;
-            $rec->fill($zone);
-
-            dd($rec);
-
-            $rec->save();
-        }
+        $this->fill($data);
     }
 }
