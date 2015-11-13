@@ -58,5 +58,6 @@ class Zone extends Model implements ImportInterface
     public function import(array $data)
     {
         $this->fill($data);
+        dd($this);
     }
 }

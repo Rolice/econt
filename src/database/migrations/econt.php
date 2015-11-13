@@ -1,5 +1,6 @@
 <?php
 
+use Config;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
@@ -12,7 +13,7 @@ class Econt extends Migration {
      */
     public function up()
     {
-        Schema::create('econt_zones', function(Blueprint $table) {
+        Schema::setConnection(DB::connection(Config::get('econt.connection')))->create('econt_zones', function(Blueprint $table) {
             $table->unsignedInteger('id');
             $table->string('name');
             $table->string('name_en');
@@ -23,7 +24,7 @@ class Econt extends Migration {
             $table->primary('id');
         });
 
-        Schema::create('econt_countries', function(Blueprint $table) {
+        Schema::setConnection(DB::connection(Config::get('econt.connection')))->create('econt_countries', function(Blueprint $table) {
             $table->unsignedInteger('id');
             $table->unsignedInteger('zone_id')->index('idx_zone_id');
             $table->unsignedInteger('office_id')->index('idx_office_id');
@@ -57,7 +58,7 @@ class Econt extends Migration {
             $table->primary('id');
         });
 
-        Schema::create('econt_cities', function(Blueprint $table) {
+        Schema::setConnection(DB::connection(Config::get('econt.connection')))->create('econt_cities', function(Blueprint $table) {
             $table->unsignedInteger('id');
             $table->unsignedInteger('post_code')->unique('uk_post_code');
             $table->unsignedInteger('zone_id')->index('idx_zone');
@@ -92,7 +93,7 @@ class Econt extends Migration {
             $table->unsignedInteger('post_to_office');
         });
 
-        Schema::create('econt_regions', function(Blueprint $table) {
+        Schema::setConnection(DB::connection(Config::get('econt.connection')))->create('econt_regions', function(Blueprint $table) {
             $table->unsignedInteger('id');
             $table->unsignedInteger('city_id')->index('idx_city_id');
             $table->string('name')->nullable()->default(null);
@@ -102,7 +103,7 @@ class Econt extends Migration {
             $table->primary('id');
         });
 
-        Schema::create('econt_neighbourhoods', function(Blueprint $table) {
+        Schema::setConnection(DB::connection(Config::get('econt.connection')))->create('econt_neighbourhoods', function(Blueprint $table) {
             $table->unsignedInteger('id');
             $table->unsignedInteger('city_id')->index('idx_city');
             $table->string('name');
@@ -113,7 +114,7 @@ class Econt extends Migration {
             $table->primary('id');
         });
 
-        Schema::create('econt_streets', function(Blueprint $table) {
+        Schema::setConnection(DB::connection(Config::get('econt.connection')))->create('econt_streets', function(Blueprint $table) {
             $table->unsignedInteger('id');
             $table->unsignedInteger('city_id')->index('idx_city');
             $table->string('name');
@@ -124,7 +125,7 @@ class Econt extends Migration {
             $table->primary('id');
         });
 
-        Schema::create('econt_offices', function(Blueprint $table) {
+        Schema::setConnection(DB::connection(Config::get('econt.connection')))->create('econt_offices', function(Blueprint $table) {
             $table->unsignedInteger('id');
             $table->unsignedInteger('city_id')->index('idx_city');
             $table->unsignedInteger('street_id')->index('idx_street_id')->nullable()->default(null);
@@ -165,7 +166,13 @@ class Econt extends Migration {
      */
     public function down()
     {
-        //Schema::setConnection(DB::connection('auth'))->drop('invoicing');
-        DB::statement('ALTER TABLE econt_offices DROP COLUMN location RESTRICT');
-    }
+        Schema::setConnection(DB::connection(Config::get('econt.connection')))
+            ->drop('econt_zones')
+            ->drop('econt_countries')
+            ->drop('econt_cities')
+            ->drop('econt_regions')
+            ->drop('econt_neighbourhoods')
+            ->drop('econt_streets')
+            ->drop('econt_offices');
+   }
 }
