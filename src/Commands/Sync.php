@@ -17,7 +17,7 @@ class Sync extends Command
      *
      * @var string
      */
-    protected $description = 'Synchronizes Econt database with the packages one through their API. Caution: Slow operations.';
+    protected $description = 'Synchronizes the database with the Econt\'s one through their API. Caution: This is slow operation with heavy load.';
 
     /**
      * Execute the console command.
