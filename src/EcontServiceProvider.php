@@ -2,6 +2,7 @@
 namespace Rolice\Econt;
 
 use Illuminate\Support\ServiceProvider;
+use Rolice\Econt\Commands\Sync;
 
 /**
  * EcontServiceProvider for Laravel 5.1+
@@ -42,6 +43,12 @@ class EcontServiceProvider extends ServiceProvider
         $this->app->singleton('Econt', function () {
             return new Econt;
         });
+
+        $this->app['sync'] = $this->app->share(function($app) {
+            return new Sync;
+        });
+
+        $this->commands('sync');
     }
 
     /**
