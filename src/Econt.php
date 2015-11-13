@@ -159,7 +159,7 @@ class Econt
     {
         $result = $this->request(
             RequestType::CITIES,
-            [RequestType::CITIES => ['id_zone' => 'all', 'report_type' => 'short']]
+            [RequestType::CITIES => ['id_zone' => 'all', 'report_type' => 'all']]
         );
 
         if (!isset($result['cities']['e'])) {

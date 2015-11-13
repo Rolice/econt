@@ -74,7 +74,7 @@ class City extends Model implements ImportInterface
             'region_en',
             'id_country',
             'id_office',
-            'update_time',
+            'updated_time',
             'hub_code',
             'hub_name',
             'hub_name_en',
@@ -102,19 +102,19 @@ class City extends Model implements ImportInterface
         }
 
         $this->id = (int)$data['id'];
-        $this->post_code = $data['post_code'];
+        $this->post_code = $data['post_code'] ?: '';
         $this->type = $data['type'] ?: null;
         $this->zone_id = (int)$data['id_zone'] ?: null;
         $this->country_id = (int)$data['id_country'];
-        $this->name = $data['name'];
-        $this->name_en = $data['name_en'];
-        $this->region = $data['region'];
-        $this->region_en = $data['region_en'];
-        $this->office_id = (int)$data['office_id'] ?: null;
+        $this->name = $data['name'] ?: '';
+        $this->name_en = $data['name_en'] ?: '';
+        $this->region = $data['region'] ?: '';
+        $this->region_en = $data['region_en'] ?: '';
+        $this->office_id = (int)$data['id_office'] ?: null;
         $this->updated_time = $data['updated_time'] && '0000-00-00 00:00:00' != $data['updated_time'] ? $data['updated_time'] : null;
-        $this->hub_code = $data['hub_code'];
-        $this->hub_name = $data['hub_name'];
-        $this->hub_name_en = $data['hub_name_en'];
+        $this->hub_code = $data['hub_code'] ?: '';
+        $this->hub_name = $data['hub_name'] ?: '';
+        $this->hub_name_en = $data['hub_name_en'] ?: '';
 
         $this->courier_from_door = isset($data['attach_offices']['courier_shipments']['from_door']) ? $data['attach_offices']['courier_shipments']['from_door'] : null;
         $this->courier_to_door = isset($data['attach_offices']['courier_shipments']['to_door']) ? $data['attach_offices']['courier_shipments']['to_door'] : null;
