@@ -34,7 +34,7 @@ class Sync extends Command
     {
         $this->comment(PHP_EOL . 'Importing zones... Please wait.');
 
-        Zone::delete();
+        Zone::whereRaw(1)->delete();
 
         foreach (App::make('Econt')->zones() as $zone) {
             (new Zone)->import($zone);
@@ -44,7 +44,7 @@ class Sync extends Command
 
         $this->comment(PHP_EOL . 'Importing settlements... Please wait.');
 
-        Settlement::delete();
+        Settlement::whereRaw(1)->delete();
 
         foreach (App::make('Econt')->settlements() as $settlement) {
             (new Settlement)->import($settlement);
@@ -54,7 +54,7 @@ class Sync extends Command
 
         $this->comment(PHP_EOL . 'Importing regions... Please wait.');
 
-        Region::delete();
+        Region::whereRaw(1)->delete();
 
         foreach (App::make('Econt')->regions() as $region) {
             (new Region)->import($region);
