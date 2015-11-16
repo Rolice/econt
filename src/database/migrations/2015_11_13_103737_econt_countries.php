@@ -20,9 +20,9 @@ class EcontCountries extends Migration
             $table->string('name_en');
             $table->string('region');
             $table->string('region_en');
-            $table->string('hub_code');
-            $table->string('hub_name');
-            $table->string('hub_name_en');
+            $table->unsignedInteger('hub_code');
+            $table->string('hub_name')->nullable()->default(null);
+            $table->string('hub_name_en')->nullable()->default(null);
             $table->unsignedTinyInteger('service_days')->index('idx_service_days');
             $table->timestamps();
 

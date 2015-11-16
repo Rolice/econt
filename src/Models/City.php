@@ -102,7 +102,7 @@ class City extends Model implements ImportInterface
         }
 
         $this->id = (int)$data['id'];
-        $this->post_code = $data['post_code'] ?: '';
+        $this->post_code = $data['post_code'] ?: null;
         $this->type = $data['type'] ?: null;
         $this->zone_id = (int)$data['id_zone'] ?: null;
         $this->country_id = (int)$data['id_country'];
