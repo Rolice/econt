@@ -15,6 +15,7 @@ class EcontSettlements extends Migration
         Schema::setConnection(DB::connection(Config::get('econt.connection')))->create('econt_settlements', function (Blueprint $table) {
             $table->unsignedInteger('id');
             $table->unsignedInteger('zone_id')->index('idx_zone_id')->nullable()->default(null);
+            $table->unsignedInteger('country_id')->index('idx_country_id')->nullable()->default(null);
             $table->unsignedInteger('office_id')->index('idx_office_id')->nullable()->default(null);
             $table->unsignedInteger('post_code')->nullable()->default(null);
             $table->enum('type', ['village', 'city'])->nullable()->default(null);
