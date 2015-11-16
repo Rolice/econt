@@ -57,6 +57,11 @@ class Settlement extends Model implements ImportInterface
         $this->setConnection(Config::get('econt.connection'));
     }
 
+    public function country()
+    {
+        return $this->belongsTo('Rolice\Econt\Models\Settlement', 'country_id');
+    }
+
     public function neighbourhoods()
     {
         return $this->hasMany('Rolice\Econt\Models\Neighbourhoods', 'city_id');

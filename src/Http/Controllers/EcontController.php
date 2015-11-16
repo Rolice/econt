@@ -17,7 +17,7 @@ class EcontController extends Controller
 
     public function settlements()
     {
-        return Settlement::with('country')->orderBy('name')->limit(10)->get();
+        return Settlement::with('country')->orderBy('name')->get();
     }
 
     public function neighbourhoods()
