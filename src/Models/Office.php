@@ -106,6 +106,25 @@ class Office extends Model implements ImportInterface
             }
         }
 
+        $details_keys = [
+            'id_quarter',
+            'quarter_name',
+            'id_street',
+            'street_name',
+            'num',
+            'bl',
+            'vh',
+            'et',
+            'ap',
+            'other'
+        ];
+
+        foreach ($details_keys as $key) {
+            if (!isset($data['address_details'][$key])) {
+                return false;
+            }
+        }
+
         if (0 >= (int)$data['id'] || 0 >= (int)$data['id_city']) {
             return false;
         }
@@ -122,22 +141,22 @@ class Office extends Model implements ImportInterface
         $this->id = (int)$data['id'];
         $this->name = $data['name'] ?: '';
         $this->name_en = $data['name_en'] ?: '';
-        $this->office_code = (int)$data['office_code'] ?: null;
+        $this->code = (int)$data['office_code'] ?: null;
         $this->address = $data['address'] ?: '';
         $this->address_en = $data['address_en'] ?: '';
         $this->city_id = (int)$data['id_city'];
         $this->city = $data['city_name'] ?: '';
         $this->city_en = $data['city_name_en'] ?: '';
-        $this->neighbourhood_id = (int)$data['id_quarter'] ?: null;
-        $this->neighbourhood = $data['quarter_name'] ?: null;
-        $this->street_id = (int)$data['id_street'] ?: null;
-        $this->street = $data['street_name'] ?: null;
-        $this->street_num = $data['num'] ?: null;
-        $this->bl = $data['bl'] ?: null;
-        $this->vh = $data['vh'] ?: null;
-        $this->et = $data['et'] ?: null;
-        $this->ap = $data['ap'] ?: null;
-        $this->other = $data['other'] ?: null;
+        $this->neighbourhood_id = (int)$data['address_details']['id_quarter'] ?: null;
+        $this->neighbourhood = $data['address_details']['quarter_name'] ?: null;
+        $this->street_id = (int)$data['address_details']['id_street'] ?: null;
+        $this->street = $data['address_details']['street_name'] ?: null;
+        $this->street_num = $data['address_details']['num'] ?: null;
+        $this->bl = $data['address_details']['bl'] ?: null;
+        $this->vh = $data['address_details']['vh'] ?: null;
+        $this->et = $data['address_details']['et'] ?: null;
+        $this->ap = $data['address_details']['ap'] ?: null;
+        $this->other = $data['address_details']['other'] ?: null;
         $this->phone = $data['phone'] ?: null;
         $this->work_begin = $data['work_begin'] && '00:00:00' != $data['work_begin'] ? $data['work_begin'] : null;
         $this->work_end = $data['work_end'] && '00:00:00' != $data['work_end'] ? $data['work_end'] : null;
