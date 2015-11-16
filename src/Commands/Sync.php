@@ -8,6 +8,7 @@ use Rolice\Econt\Models\Neighbourhood;
 use Rolice\Econt\Models\Settlement;
 use Rolice\Econt\Models\Street;
 use Rolice\Econt\Models\Region;
+use Rolice\Econt\Models\Office;
 use Rolice\Econt\Models\Zone;
 
 class Sync extends Command
@@ -83,5 +84,16 @@ class Sync extends Command
         }
 
         $this->comment(PHP_EOL . 'Streets imported successfully.' . PHP_EOL);
+
+        $this->comment(PHP_EOL . 'Importing offices... Please wait.');
+
+        Office::whereRaw(1)->delete();
+
+        foreach (App::make('Econt')->offices() as $region) {
+            (new Office)->import($region);
+        }
+
+        $this->comment(PHP_EOL . 'Offices imported successfully.' . PHP_EOL);
     }
+
 }

@@ -201,4 +201,16 @@ class Econt
 
         return $result['cities_street']['e'];
     }
+
+    public final function offices()
+    {
+        $result = $this->request(RequestType::OFFICES);
+
+        if (!isset($result['offices']['e'])) {
+            throw new EcontException('Could not receive correct streets.');
+        }
+
+        return $result['offices']['e'];
+    }
+
 }
