@@ -149,8 +149,6 @@ class Settlement extends Model implements ImportInterface
         $this->hub_name_en = $data['hub_name_en'] ?: '';
         $this->service_days = bindec($service_days);
 
-        $dispatching = null;
-
         (new Dispatching)->import($data);
 
         if (!$this->save()) {
