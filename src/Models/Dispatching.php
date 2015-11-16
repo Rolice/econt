@@ -65,6 +65,10 @@ class Dispatching extends Model implements ImportInterface
         $this->setConnection(Config::get('econt.connection'));
     }
 
+    public function settlement() {
+        return $this->belongsTo('Rolice\Econt\Models\Settlement');
+    }
+
     public function validateImport(array $data)
     {
         if (empty($data)) {
@@ -155,7 +159,7 @@ class Dispatching extends Model implements ImportInterface
         $dispatching->settlement_id = (int)$settlement_id;
         $dispatching->shipment = $shipment;
         $dispatching->direction = $direction;
-        $dispatching->office_id = (int)$code;
+        $dispatching->office_code = (int)$code;
 
         if (!$dispatching->save()) {
             throw new EcontException('Could not import dispatching data.');

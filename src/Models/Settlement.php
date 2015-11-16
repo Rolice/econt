@@ -57,6 +57,11 @@ class Settlement extends Model implements ImportInterface
         $this->setConnection(Config::get('econt.connection'));
     }
 
+    public function dispatching()
+    {
+        $this->hasMany('Rolice\Econt\Dispatching');
+    }
+
     public function validateImport(array $data)
     {
         if (empty($data)) {
