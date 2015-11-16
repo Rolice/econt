@@ -44,8 +44,7 @@ class Sync extends Command
         $this->comment(PHP_EOL . 'Importing settlements... Please wait.');
 
         foreach (App::make('Econt')->settlements() as $settlement) {
-            $model = 0 >= $settlement['id_country'] ? new Country : new City;
-            $model->import($settlement);
+            (new Settlement)->import($settlement);
         }
 
         $this->comment(PHP_EOL . 'Settlements imported successfully.');
