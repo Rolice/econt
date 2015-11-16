@@ -99,7 +99,7 @@ class Street extends Model implements ImportInterface
         $this->name = $data['name'] ?: '';
         $this->name_en = $data['name_en'] ?: '';
         $this->city_post_code = (int) $data['city_post_code'] ?: '';
-        $this->city_id = (int) $data['id_cty'];
+        $this->city_id = (int) $data['id_city'];
         $this->updated_time = $data['updated_time'] && '0000-00-00 00:00:00' != $data['updated_time'] ? $data['updated_time'] : null;
 
         if (!$this->save()) {
