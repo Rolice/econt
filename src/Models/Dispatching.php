@@ -143,17 +143,11 @@ class Dispatching extends Model implements ImportInterface
 
     private static function _import($settlement_id, $shipment, $direction, $code)
     {
-        $shipments = [
-            self::SHIPMENT_COURIER,
-            self::SHIPMENT_CARGO_PALLET,
-            self::SHIPMENT_CARGO_EXPRESS,
-            self::SHIPMENT_POST
-        ];
-
-        $directions = [self::DIRECTION_FROM, self::DIRECTION_TO];
+        $shipments = ['courier', 'cargo_pallet', 'cargo_express', 'post'];
+        $directions = ['from', 'to'];
 
         if (!in_array((string)$shipment, $shipments) || !in_array((string)$direction, $directions)) {
-            throw new EcontException("Invalid dispatching data. Shipment is $shipment and direction is $direction.s");
+            throw new EcontException("Invalid dispatching data. Shipment is $shipment and direction is $direction.");
         }
 
         $dispatching = new self;
