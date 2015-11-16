@@ -4,7 +4,9 @@ namespace Rolice\Econt\Commands;
 use App;
 use Illuminate\Console\Command;
 
+use Rolice\Econt\Models\Neighbourhood;
 use Rolice\Econt\Models\Settlement;
+use Rolice\Econt\Models\Street;
 use Rolice\Econt\Models\Region;
 use Rolice\Econt\Models\Zone;
 
@@ -61,5 +63,25 @@ class Sync extends Command
         }
 
         $this->comment(PHP_EOL . 'Regions imported successfully.' . PHP_EOL);
+
+        $this->comment(PHP_EOL . 'Importing neighbourhoods... Please wait.');
+
+        Neighbourhood::whereRaw(1)->delete();
+
+        foreach (App::make('Econt')->neighbourhoods() as $region) {
+            (new Neighbourhood)->import($region);
+        }
+
+        $this->comment(PHP_EOL . 'Neighbourhoods imported successfully.' . PHP_EOL);
+
+        $this->comment(PHP_EOL . 'Importing streets... Please wait.');
+
+        Street::whereRaw(1)->delete();
+
+        foreach (App::make('Econt')->streets() as $region) {
+            (new Street)->import($region);
+        }
+
+        $this->comment(PHP_EOL . 'Streets imported successfully.' . PHP_EOL);
     }
 }

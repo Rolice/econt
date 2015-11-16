@@ -179,4 +179,26 @@ class Econt
 
         return $result['cities_regions']['e'];
     }
+
+    public final function neighbourhoods()
+    {
+        $result = $this->request(RequestType::NEIGHBOURHOODS);
+
+        if (!isset($result['cities_quarters']['e'])) {
+            throw new EcontException('Could not receive correct neighbourhoods.');
+        }
+
+        return $result['cities_quarters']['e'];
+    }
+
+    public final function streets()
+    {
+        $result = $this->request(RequestType::STREETS);
+
+        if (!isset($result['cities_street']['e'])) {
+            throw new EcontException('Could not receive correct streets.');
+        }
+
+        return $result['cities_street']['e'];
+    }
 }

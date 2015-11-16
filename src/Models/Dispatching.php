@@ -10,13 +10,15 @@ use Rolice\Econt\ImportInterface;
 class Dispatching extends Model implements ImportInterface
 {
 
-    const SHIPMENT_COURIER = 'courier_shipments';
-    const SHIPMENT_CARGO_PALLET = 'cargo_palet_shipments';
-    const SHIPMENT_CARGO_EXPRESS = 'cargo_expres_shipments';
-    const SHIPMENT_POST = 'post_shipments';
+    const ECONT_SHIPMENT_COURIER = 'courier_shipments';
+    const ECONT_SHIPMENT_CARGO_PALLET = 'cargo_palet_shipments';
+    const ECONT_SHIPMENT_CARGO_EXPRESS = 'cargo_expres_shipments';
+    const ECONT_SHIPMENT_POST = 'post_shipments';
 
-    const DIRECTION_FROM = 'from_door';
-    const DIRECTION_TO = 'to_door';
+    const ECONT_DIRECTION_FROM_DOOR = 'from_door';
+    const ECONT_DIRECTION_TO_DOOR = 'to_door';
+    const ECONT_DIRECTION_FROM_OFFICE = 'from_office';
+    const ECONT_DIRECTION_TO_OFFICE = 'to_office';
 
     /**
      * The database connection used by the model.
@@ -102,30 +104,32 @@ class Dispatching extends Model implements ImportInterface
 
         $keys = ['courier_shipments', 'cargo_palet_shipments', 'cargo_expres_shipments', 'post_shipments'];
 
+        $shipments = [
+            self::ECONT_SHIPMENT_COURIER => 'courier',
+            self::ECONT_SHIPMENT_CARGO_PALLET => 'cargo_pallet',
+            self::ECONT_SHIPMENT_CARGO_EXPRESS => 'cargo_express',
+            self::ECONT_SHIPMENT_POST => 'post',
+        ];
+
+        $directions = [
+            self::ECONT_DIRECTION_FROM_DOOR,
+            self::ECONT_DIRECTION_TO_DOOR,
+            self::ECONT_DIRECTION_FROM_OFFICE,
+            self::ECONT_DIRECTION_TO_OFFICE,
+        ];
+
         foreach ($keys as $key) {
             if (!isset($data['attach_offices'][$key])) {
                 continue;
             }
 
-            $shipments = [
-                self::SHIPMENT_COURIER => 'courier',
-                self::SHIPMENT_CARGO_PALLET => 'cargo_pallet',
-                self::SHIPMENT_CARGO_EXPRESS => 'cargo_express',
-                self::SHIPMENT_POST => 'post',
-            ];
-
             $shipment = $shipments[$key];
 
             if (isset($data['attach_offices'][$key])) {
                 foreach ($data['attach_offices'][$key] as $dir => $codes) {
-                    if (self::DIRECTION_FROM !== $dir && self::DIRECTION_TO !== $dir) {
-                        throw new EcontException('Invalid direction.');
+                    if (!in_array($dir, $directions)) {
+                        throw new EcontException("Invalid direction $dir.");
                     }
-
-                    $directions = [
-                        self::DIRECTION_FROM => 'from',
-                        self::DIRECTION_TO => 'to',
-                    ];
 
                     $direction = $directions[$dir];
 

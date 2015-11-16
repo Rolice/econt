@@ -13,13 +13,12 @@ class EcontDispatching extends Migration
     public function up()
     {
         Schema::setConnection(DB::connection(Config::get('econt.connection')))->create('econt_dispatching', function (Blueprint $table) {
+            $table->increments('id');
             $table->unsignedInteger('settlement_id');
-            $table->enum('direction', ['from', 'to'])->index('idx_direction');
+            $table->enum('direction', ['from_door', 'to_door', 'from_office', 'to_office'])->index('idx_direction');
             $table->enum('shipment', ['courier', 'cargo_pallet', 'cargo_express', 'post'])->index('idx_shipment');
             $table->unsignedInteger('office_code');
             $table->timestamps();
-
-            $table->primary(['settlement_id', 'direction', 'shipment']);
         });
     }
 

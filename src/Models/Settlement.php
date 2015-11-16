@@ -57,9 +57,14 @@ class Settlement extends Model implements ImportInterface
         $this->setConnection(Config::get('econt.connection'));
     }
 
+    public function neighbourhoods()
+    {
+        return $this->hasMany('Rolice\Econt\Models\Neighbourhoods', 'city_id');
+    }
+
     public function dispatching()
     {
-        $this->hasMany('Rolice\Econt\Dispatching');
+        $this->hasMany('Rolice\Econt\Models\Dispatching');
     }
 
     public function validateImport(array $data)
@@ -120,6 +125,14 @@ class Settlement extends Model implements ImportInterface
             }
         }
 
+        $service_days = '';
+
+        for($i = 1; $i <= 7; $i++) {
+            $service_days = (isset($data['service_days']["day$i"]) ? (int) !!$data['service_days']["day$i"] : 0) . $service_days;
+        }
+
+        $service_days = 0 . $service_days;
+
         $this->id = (int)$data['id'];
         $this->post_code = (int)$data['post_code'] ?: null;
         $this->type = $type;
@@ -134,6 +147,7 @@ class Settlement extends Model implements ImportInterface
         $this->hub_code = $data['hub_code'] ?: '';
         $this->hub_name = $data['hub_name'] ?: '';
         $this->hub_name_en = $data['hub_name_en'] ?: '';
+        $this->service_days = bindec($service_days);
 
         $dispatching = null;
 
