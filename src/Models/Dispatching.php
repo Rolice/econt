@@ -112,10 +112,10 @@ class Dispatching extends Model implements ImportInterface
         ];
 
         $directions = [
-            self::ECONT_DIRECTION_FROM_DOOR,
-            self::ECONT_DIRECTION_TO_DOOR,
-            self::ECONT_DIRECTION_FROM_OFFICE,
-            self::ECONT_DIRECTION_TO_OFFICE,
+            self::ECONT_DIRECTION_FROM_DOOR => self::ECONT_DIRECTION_FROM_DOOR,
+            self::ECONT_DIRECTION_TO_DOOR => self::ECONT_DIRECTION_TO_DOOR,
+            self::ECONT_DIRECTION_FROM_OFFICE => self::ECONT_DIRECTION_FROM_OFFICE,
+            self::ECONT_DIRECTION_TO_OFFICE => self::ECONT_DIRECTION_TO_OFFICE,
         ];
 
         foreach ($keys as $key) {
@@ -152,7 +152,7 @@ class Dispatching extends Model implements ImportInterface
     private static function _import($settlement_id, $shipment, $direction, $code)
     {
         $shipments = ['courier', 'cargo_pallet', 'cargo_express', 'post'];
-        $directions = ['from', 'to'];
+        $directions = ['from_door', 'to_door', 'from_office', 'to_office'];
 
         if (!in_array((string)$shipment, $shipments) || !in_array((string)$direction, $directions)) {
             throw new EcontException("Invalid dispatching data. Shipment is $shipment and direction is $direction.");
