@@ -16,6 +16,7 @@ class EcontCities extends Migration
             $table->unsignedInteger('id');
             $table->unsignedInteger('zone_id')->index('idx_zone_id')->nullable()->default(null);
             $table->unsignedInteger('office_id')->index('idx_office_id')->nullable()->default(null);
+            $table->string('post_code', 50)->nullable()->default(null);
             $table->string('name');
             $table->string('name_en');
             $table->string('region');

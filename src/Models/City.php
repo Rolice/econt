@@ -116,25 +116,25 @@ class City extends Model implements ImportInterface
         $this->hub_name = $data['hub_name'] ?: '';
         $this->hub_name_en = $data['hub_name_en'] ?: '';
 
-        $this->courier_from_door = isset($data['attach_offices']['courier_shipments']['from_door']) ? $data['attach_offices']['courier_shipments']['from_door'] : null;
-        $this->courier_to_door = isset($data['attach_offices']['courier_shipments']['to_door']) ? $data['attach_offices']['courier_shipments']['to_door'] : null;
-        $this->courier_from_office = isset($data['attach_offices']['courier_shipments']['from_office']) ? $data['attach_offices']['courier_shipments']['from_office'] : null;
-        $this->courier_to_office = isset($data['attach_offices']['courier_shipments']['to_office']) ? $data['attach_offices']['courier_shipments']['to_office'] : null;
+        $this->courier_from_door = isset($data['attach_offices']['courier_shipments']['from_door']['office_code']) ? $data['attach_offices']['courier_shipments']['from_door']['office_code'] : null;
+        $this->courier_to_door = isset($data['attach_offices']['courier_shipments']['to_door']['office_code']) ? $data['attach_offices']['courier_shipments']['to_door']['office_code'] : null;
+        $this->courier_from_office = isset($data['attach_offices']['courier_shipments']['from_office']['office_code']) ? $data['attach_offices']['courier_shipments']['from_office']['office_code'] : null;
+        $this->courier_to_office = isset($data['attach_offices']['courier_shipments']['to_office']['office_code']) ? $data['attach_offices']['courier_shipments']['to_office']['office_code'] : null;
 
-        $this->cargo_pallet_from_door = isset($data['attach_offices']['cargo_palet_shipments']['from_door']) ? $data['attach_offices']['cargo_palet_shipments']['from_door'] : null;
-        $this->cargo_pallet_to_door = isset($data['attach_offices']['cargo_palet_shipments']['to_door']) ? $data['attach_offices']['cargo_palet_shipments']['to_door'] : null;
-        $this->cargo_pallet_from_office = isset($data['attach_offices']['cargo_palet_shipments']['from_office']) ? $data['attach_offices']['cargo_palet_shipments']['from_office'] : null;
-        $this->cargo_pallet_to_office = isset($data['attach_offices']['cargo_palet_shipments']['to_office']) ? $data['attach_offices']['cargo_palet_shipments']['to_office'] : null;
+        $this->cargo_pallet_from_door = isset($data['attach_offices']['cargo_palet_shipments']['from_door']['office_code']) ? $data['attach_offices']['cargo_palet_shipments']['from_door']['office_code'] : null;
+        $this->cargo_pallet_to_door = isset($data['attach_offices']['cargo_palet_shipments']['to_door']['office_code']) ? $data['attach_offices']['cargo_palet_shipments']['to_door']['office_code'] : null;
+        $this->cargo_pallet_from_office = isset($data['attach_offices']['cargo_palet_shipments']['from_office']['office_code']) ? $data['attach_offices']['cargo_palet_shipments']['from_office']['office_code'] : null;
+        $this->cargo_pallet_to_office = isset($data['attach_offices']['cargo_palet_shipments']['to_office']['office_code']) ? $data['attach_offices']['cargo_palet_shipments']['to_office']['office_code'] : null;
 
-        $this->cargo_express_from_door = isset($data['attach_offices']['cargo_expres_shipments']['from_door']) ? $data['attach_offices']['cargo_expres_shipments']['from_door'] : null;
-        $this->cargo_express_to_door = isset($data['attach_offices']['cargo_expres_shipments']['to_door']) ? $data['attach_offices']['cargo_expres_shipments']['to_door'] : null;
-        $this->cargo_express_from_office = isset($data['attach_offices']['cargo_expres_shipments']['from_office']) ? $data['attach_offices']['cargo_expres_shipments']['from_office'] : null;
-        $this->cargo_express_to_office = isset($data['attach_offices']['cargo_expres_shipments']['to_office']) ? $data['attach_offices']['cargo_expres_shipments']['to_office'] : null;
+        $this->cargo_express_from_door = isset($data['attach_offices']['cargo_expres_shipments']['from_door']['office_code']) ? $data['attach_offices']['cargo_expres_shipments']['from_door']['office_code'] : null;
+        $this->cargo_express_to_door = isset($data['attach_offices']['cargo_expres_shipments']['to_door']['office_code']) ? $data['attach_offices']['cargo_expres_shipments']['to_door']['office_code'] : null;
+        $this->cargo_express_from_office = isset($data['attach_offices']['cargo_expres_shipments']['from_office']['office_code']) ? $data['attach_offices']['cargo_expres_shipments']['from_office']['office_code'] : null;
+        $this->cargo_express_to_office = isset($data['attach_offices']['cargo_expres_shipments']['to_office']['office_code']) ? $data['attach_offices']['cargo_expres_shipments']['to_office']['office_code'] : null;
 
-        $this->post_from_door = isset($data['attach_offices']['post_shipments']['from_door']) ? $data['attach_offices']['post_shipments']['from_door'] : null;
-        $this->post_to_door = isset($data['attach_offices']['post_shipments']['to_door']) ? $data['attach_offices']['post_shipments']['to_door'] : null;
-        $this->post_from_office = isset($data['attach_offices']['post_shipments']['from_office']) ? $data['attach_offices']['post_shipments']['from_office'] : null;
-        $this->post_to_office = isset($data['attach_offices']['post_shipments']['to_office']) ? $data['attach_offices']['post_shipments']['to_office'] : null;
+        $this->post_from_door = isset($data['attach_offices']['post_shipments']['from_door']['office_code']) ? $data['attach_offices']['post_shipments']['from_door']['office_code'] : null;
+        $this->post_to_door = isset($data['attach_offices']['post_shipments']['to_door']['office_code']) ? $data['attach_offices']['post_shipments']['to_door']['office_code'] : null;
+        $this->post_from_office = isset($data['attach_offices']['post_shipments']['from_office']['office_code']) ? $data['attach_offices']['post_shipments']['from_office']['office_code'] : null;
+        $this->post_to_office = isset($data['attach_offices']['post_shipments']['to_office']['office_code']) ? $data['attach_offices']['post_shipments']['to_office']['office_code'] : null;
 
         if (!$this->save()) {
             throw new EcontException("Error importing zone {$this->id} (named: {$this->name}).");
