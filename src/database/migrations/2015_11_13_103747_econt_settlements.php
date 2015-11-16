@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class EcontCountries extends Migration
+class EcontSettlements extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,12 @@ class EcontCountries extends Migration
      */
     public function up()
     {
-        Schema::setConnection(DB::connection(Config::get('econt.connection')))->create('econt_countries', function (Blueprint $table) {
+        Schema::setConnection(DB::connection(Config::get('econt.connection')))->create('econt_settlements', function (Blueprint $table) {
             $table->unsignedInteger('id');
             $table->unsignedInteger('zone_id')->index('idx_zone_id')->nullable()->default(null);
             $table->unsignedInteger('office_id')->index('idx_office_id')->nullable()->default(null);
+            $table->unsignedInteger('post_code')->nullable()->default(null);
+            $table->enum('type', ['village', 'city'])->nullable()->default(null);
             $table->string('name');
             $table->string('name_en');
             $table->string('region');
@@ -45,8 +47,6 @@ class EcontCountries extends Migration
             $table->unsignedInteger('post_to_door')->nullable()->default(null);
             $table->unsignedInteger('post_from_office')->nullable()->default(null);
             $table->unsignedInteger('post_to_office')->nullable()->default(null);
-
-            $table->primary('id');
         });
     }
 
@@ -57,6 +57,6 @@ class EcontCountries extends Migration
      */
     public function down()
     {
-        Schema::setConnection(DB::connection(Config::get('econt.connection')))->dropIfExists('econt_countries');
+        Schema::setConnection(DB::connection(Config::get('econt.connection')))->dropIfExists('econt_settlements');
     }
 }

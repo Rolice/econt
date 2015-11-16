@@ -7,8 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 use Rolice\Econt\Exceptions\EcontException;
 use Rolice\Econt\ImportInterface;
 
-class Country extends Model implements ImportInterface
+class Dispatching extends Model implements ImportInterface
 {
+
+    const SHIPMENT_COURIER = 'courier_shipments';
+    const SHIPMENT_CARGO_PALLET = 'cargo_palet_shipments';
+    const SHIPMENT_CARGO_EXPRESS = 'cargo_expres_shipments';
+    const SHIPMENT_POST = 'post_shipments';
+
 
     /**
      * The database connection used by the model.
@@ -22,7 +28,7 @@ class Country extends Model implements ImportInterface
      *
      * @var string
      */
-    protected $table = 'econt_countries';
+    protected $table = 'econt_dispatching';
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -63,24 +69,7 @@ class Country extends Model implements ImportInterface
             return false;
         }
 
-        $keys = [
-            'id',
-            'post_code',
-            'type',
-            'id_zone',
-            'name',
-            'name_en',
-            'region',
-            'region_en',
-            'id_country',
-            'id_office',
-            'updated_time',
-            'hub_code',
-            'hub_name',
-            'hub_name_en',
-            'service_days',
-            'attach_offices',
-        ];
+        $keys = ['attach_offices'];
 
         foreach ($keys as $key) {
             if (!isset($data[$key])) {
@@ -88,7 +77,7 @@ class Country extends Model implements ImportInterface
             }
         }
 
-        if (0 >= (int)$data['id']) {
+        if (0 >= count($data['attach_offices'])) {
             return false;
         }
 
@@ -101,19 +90,38 @@ class Country extends Model implements ImportInterface
             return;
         }
 
-        $this->id = (int)$data['id'];
-        $this->post_code = $data['post_code'] ?: '';
-        $this->type = $data['type'] ?: null;
-        $this->zone_id = (int)$data['id_zone'] ?: null;
-        $this->name = $data['name'] ?: '';
-        $this->name_en = $data['name_en'] ?: '';
-        $this->region = $data['region'] ?: '';
-        $this->region_en = $data['region_en'] ?: '';
-        $this->office_id = (int)$data['id_office'] ?: null;
-        $this->updated_time = $data['updated_time'] && '0000-00-00 00:00:00' != $data['updated_time'] ? $data['updated_time'] : null;
-        $this->hub_code = $data['hub_code'] ?: '';
-        $this->hub_name = $data['hub_name'] ?: '';
-        $this->hub_name_en = $data['hub_name_en'] ?: '';
+        if (!isset($data['attach_offices'])) {
+            return;
+        }
+
+        $keys = ['courier_shipments', 'cargo_palet_shipments', 'cargo_expres_shipments', 'post_shipments'];
+
+        foreach ($keys as $key) {
+            if (!isset($data['attach_offices'][$key])) {
+                continue;
+            }
+
+            $types = [
+                'courier_shipments' => 'courier',
+                'cargo_palet_shipments' => 'cargo_pallet',
+                'cargo_expres_shipments' => 'cargo_express',
+                'post_shipments' => 'post',
+            ];
+
+            $type = $types[$key];
+
+            if (isset($data['attach_offices'][$key]['from_door'])) {
+                $direction = 'from';
+            }
+        }
+
+        $dispatching = $data['attach_offices']['courier_shipments']['from_door']['office_code'];
+
+        if (isset($data['attach_offices']['courier_shipments']['from_door']['office_code'])) {
+            $dispatching = $data['attach_offices']['courier_shipments']['from_door']['office_code'];
+
+        }
+
 
         $this->courier_from_door = isset($data['attach_offices']['courier_shipments']['from_door']['office_code']) ? $data['attach_offices']['courier_shipments']['from_door']['office_code'] : null;
         $this->courier_to_door = isset($data['attach_offices']['courier_shipments']['to_door']['office_code']) ? $data['attach_offices']['courier_shipments']['to_door']['office_code'] : null;
@@ -134,10 +142,6 @@ class Country extends Model implements ImportInterface
         $this->post_to_door = isset($data['attach_offices']['post_shipments']['to_door']['office_code']) ? $data['attach_offices']['post_shipments']['to_door']['office_code'] : null;
         $this->post_from_office = isset($data['attach_offices']['post_shipments']['from_office']['office_code']) ? $data['attach_offices']['post_shipments']['from_office']['office_code'] : null;
         $this->post_to_office = isset($data['attach_offices']['post_shipments']['to_office']['office_code']) ? $data['attach_offices']['post_shipments']['to_office']['office_code'] : null;
-
-        if (!$this->save()) {
-            throw new EcontException("Error importing zone {$this->id} (named: {$this->name}).");
-        }
     }
 
 }

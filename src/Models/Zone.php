@@ -92,7 +92,7 @@ class Zone extends Model implements ImportInterface
         $this->updated_time = $data['updated_time'] && '0000-00-00 00:00:00' != $data['updated_time'] ? $data['updated_time'] : null;
 
         if (!$this->save()) {
-            throw new EcontException("Error importing zone {$this->id} (named: {$this->name}).");
+            throw new EcontException("Error importing zone {$this->id}, named {$this->name}.");
         }
     }
 
