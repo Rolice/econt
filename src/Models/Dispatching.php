@@ -15,6 +15,8 @@ class Dispatching extends Model implements ImportInterface
     const SHIPMENT_CARGO_EXPRESS = 'cargo_expres_shipments';
     const SHIPMENT_POST = 'post_shipments';
 
+    const DIRECTION_FROM = 'from_door';
+    const DIRECTION_TO = 'to_door';
 
     /**
      * The database connection used by the model.
@@ -77,7 +79,7 @@ class Dispatching extends Model implements ImportInterface
             }
         }
 
-        if (0 >= count($data['attach_offices'])) {
+        if (0 >= (int)$data['id'] || 0 >= count($data['attach_offices'])) {
             return false;
         }
 
@@ -101,47 +103,68 @@ class Dispatching extends Model implements ImportInterface
                 continue;
             }
 
-            $types = [
-                'courier_shipments' => 'courier',
-                'cargo_palet_shipments' => 'cargo_pallet',
-                'cargo_expres_shipments' => 'cargo_express',
-                'post_shipments' => 'post',
+            $shipments = [
+                self::SHIPMENT_COURIER => 'courier',
+                self::SHIPMENT_CARGO_PALLET => 'cargo_pallet',
+                self::SHIPMENT_CARGO_EXPRESS => 'cargo_express',
+                self::SHIPMENT_POST => 'post',
             ];
 
-            $type = $types[$key];
+            $shipment = $shipments[$key];
 
-            if (isset($data['attach_offices'][$key]['from_door'])) {
-                $direction = 'from';
+            if (isset($data['attach_offices'][$key])) {
+                foreach ($data['attach_offices'][$key] as $dir => $codes) {
+                    if (self::DIRECTION_FROM !== $dir && self::DIRECTION_TO !== $dir) {
+                        throw new EcontException('Invalid direction.');
+                    }
+
+                    $directions = [
+                        self::DIRECTION_FROM => 'from',
+                        self::DIRECTION_TO => 'to',
+                    ];
+
+                    $direction = $directions[$dir];
+
+                    if (is_scalar($codes) && (int)$codes) {
+                        self::_import($data['id'], $shipment, $direction, $codes);
+                        continue;
+                    }
+
+                    if (is_array($codes)) {
+                        foreach ($codes as $code) {
+                            self::_import($data['id'], $shipment, $direction, $code);
+                            continue;
+                        }
+                    }
+                }
             }
         }
-
-        $dispatching = $data['attach_offices']['courier_shipments']['from_door']['office_code'];
-
-        if (isset($data['attach_offices']['courier_shipments']['from_door']['office_code'])) {
-            $dispatching = $data['attach_offices']['courier_shipments']['from_door']['office_code'];
-
-        }
-
-
-        $this->courier_from_door = isset($data['attach_offices']['courier_shipments']['from_door']['office_code']) ? $data['attach_offices']['courier_shipments']['from_door']['office_code'] : null;
-        $this->courier_to_door = isset($data['attach_offices']['courier_shipments']['to_door']['office_code']) ? $data['attach_offices']['courier_shipments']['to_door']['office_code'] : null;
-        $this->courier_from_office = isset($data['attach_offices']['courier_shipments']['from_office']['office_code']) ? $data['attach_offices']['courier_shipments']['from_office']['office_code'] : null;
-        $this->courier_to_office = isset($data['attach_offices']['courier_shipments']['to_office']['office_code']) ? $data['attach_offices']['courier_shipments']['to_office']['office_code'] : null;
-
-        $this->cargo_pallet_from_door = isset($data['attach_offices']['cargo_palet_shipments']['from_door']['office_code']) ? $data['attach_offices']['cargo_palet_shipments']['from_door']['office_code'] : null;
-        $this->cargo_pallet_to_door = isset($data['attach_offices']['cargo_palet_shipments']['to_door']['office_code']) ? $data['attach_offices']['cargo_palet_shipments']['to_door']['office_code'] : null;
-        $this->cargo_pallet_from_office = isset($data['attach_offices']['cargo_palet_shipments']['from_office']['office_code']) ? $data['attach_offices']['cargo_palet_shipments']['from_office']['office_code'] : null;
-        $this->cargo_pallet_to_office = isset($data['attach_offices']['cargo_palet_shipments']['to_office']['office_code']) ? $data['attach_offices']['cargo_palet_shipments']['to_office']['office_code'] : null;
-
-        $this->cargo_express_from_door = isset($data['attach_offices']['cargo_expres_shipments']['from_door']['office_code']) ? $data['attach_offices']['cargo_expres_shipments']['from_door']['office_code'] : null;
-        $this->cargo_express_to_door = isset($data['attach_offices']['cargo_expres_shipments']['to_door']['office_code']) ? $data['attach_offices']['cargo_expres_shipments']['to_door']['office_code'] : null;
-        $this->cargo_express_from_office = isset($data['attach_offices']['cargo_expres_shipments']['from_office']['office_code']) ? $data['attach_offices']['cargo_expres_shipments']['from_office']['office_code'] : null;
-        $this->cargo_express_to_office = isset($data['attach_offices']['cargo_expres_shipments']['to_office']['office_code']) ? $data['attach_offices']['cargo_expres_shipments']['to_office']['office_code'] : null;
-
-        $this->post_from_door = isset($data['attach_offices']['post_shipments']['from_door']['office_code']) ? $data['attach_offices']['post_shipments']['from_door']['office_code'] : null;
-        $this->post_to_door = isset($data['attach_offices']['post_shipments']['to_door']['office_code']) ? $data['attach_offices']['post_shipments']['to_door']['office_code'] : null;
-        $this->post_from_office = isset($data['attach_offices']['post_shipments']['from_office']['office_code']) ? $data['attach_offices']['post_shipments']['from_office']['office_code'] : null;
-        $this->post_to_office = isset($data['attach_offices']['post_shipments']['to_office']['office_code']) ? $data['attach_offices']['post_shipments']['to_office']['office_code'] : null;
     }
 
+    private static function _import($settlement_id, $shipment, $direction, $code)
+    {
+        $shipments = [
+            self::SHIPMENT_COURIER,
+            self::SHIPMENT_CARGO_PALLET,
+            self::SHIPMENT_CARGO_EXPRESS,
+            self::SHIPMENT_POST
+        ];
+
+        $directions = [self::DIRECTION_FROM, self::DIRECTION_TO];
+
+        if (!in_array((string)$shipment, $shipments) || !in_array((string)$direction, $directions)) {
+            throw new EcontException("Invalid dispatching data. Shipment is $shipment and direction is $direction.s");
+        }
+
+        $dispatching = new self;
+
+        $dispatching->settlement_id = (int)$settlement_id;
+        $dispatching->shipment = $shipment;
+        $dispatching->direction = $direction;
+        $dispatching->office_id = (int)$code;
+
+        if (!$dispatching->save()) {
+            throw new EcontException('Could not import dispatching data.');
+        }
+    }
 }
