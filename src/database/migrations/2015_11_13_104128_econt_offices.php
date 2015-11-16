@@ -38,7 +38,7 @@ class EcontOffices extends Migration
             $table->time('work_begin_saturday');
             $table->time('work_end_saturday');
             $table->time('priority')->index('idx_priority');
-            $table->datetime('update_time')->nullable()->default(null);
+            $table->datetime('updated_time')->nullable()->default(null);
             $table->timestamps();
 
             $table->primary('id');

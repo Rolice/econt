@@ -17,7 +17,7 @@ class EcontRegions extends Migration
             $table->unsignedInteger('city_id')->index('idx_city_id');
             $table->string('name')->nullable()->default(null);
             $table->unsignedInteger('code')->index('idx_code');
-            $table->datetime('update_time')->nullable()->default(null);
+            $table->datetime('updated_time')->nullable()->default(null);
             $table->timestamps();
 
             $table->primary('id');

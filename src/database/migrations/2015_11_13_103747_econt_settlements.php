@@ -26,6 +26,7 @@ class EcontSettlements extends Migration
             $table->string('hub_name')->nullable()->default(null);
             $table->string('hub_name_en')->nullable()->default(null);
             $table->unsignedTinyInteger('service_days')->index('idx_service_days');
+            $table->datetime('updated_time')->nullable()->default(null);
             $table->timestamps();
 
             $table->unsignedInteger('courier_from_door')->nullable()->default(null);

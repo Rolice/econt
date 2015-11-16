@@ -4,8 +4,7 @@ namespace Rolice\Econt\Commands;
 use App;
 use Illuminate\Console\Command;
 
-use Rolice\Econt\Models\City;
-use Rolice\Econt\Models\Country;
+use Rolice\Econt\Models\Settlement;
 use Rolice\Econt\Models\Region;
 use Rolice\Econt\Models\Zone;
 
