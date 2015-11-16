@@ -17,6 +17,7 @@ class EcontDispatching extends Migration
             $table->enum('direction', ['from', 'to'])->index('idx_direction');
             $table->enum('shipment', ['courier', 'cargo_pallet', 'cargo_express', 'post'])->index('idx_shipment');
             $table->unsignedInteger('office_code');
+            $table->timestamps();
 
             $table->primary(['settlement_id', 'direction', 'shipment']);
         });
