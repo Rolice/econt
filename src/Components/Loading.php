@@ -55,15 +55,4 @@ class Loading implements ComponentInterface
         $this->services = $services;
     }
 
-    public function serialize()
-    {
-        return [
-            'sender' => $this->sender->serialize(),
-            'receiver' => $this->receiver->serialize(),
-            'shipment' => $this->shipment->serialize(),
-            'payment' => $this->payment->serialize(),
-            'services' => $this->services->serialize(),
-        ];
-    }
-
 }
