@@ -24,7 +24,7 @@ class Waybill
         $data = [
             'system' => [
                 'validate' => 0,
-                'response_type' => 'JSON',
+                'response_type' => 'XML',
                 'only_calculate' => 1,
             ],
 
