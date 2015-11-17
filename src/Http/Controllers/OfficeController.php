@@ -8,14 +8,16 @@ use Rolice\Econt\Models\Settlement;
 use Rolice\Econt\Models\Street;
 use Rolice\Econt\Models\Zone;
 
+use Rolice\Econt\Helpers\Locale;
+
 class OfficeController extends Controller
 {
     public function index()
     {
-        return Office::orderBy('name')->get();
+        return Office::orderBy(Locale::name())->get();
     }
 
     public function dropdown() {
-        return Office::orderBy('name')->lists('name', 'id');
+        return Office::orderBy(Locale::name())->lists('name', 'id');
     }
 }
