@@ -140,9 +140,6 @@ class Econt
         $xml = new SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><' . $tag . '/>');
         $this->build($xml, $request);
 
-        header('Content-type: text/xml; charset=utf-8');
-        die($xml->asXML());
-
         $response = $this->parse($this->call($endpoint, $xml->asXML()));
 
         if (isset($response['error'])) {
