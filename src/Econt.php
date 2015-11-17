@@ -5,6 +5,7 @@ namespace Rolice\Econt;
 use App;
 use Config;
 use Exception;
+use Rolice\Econt\Components\ComponentInterface;
 use SimpleXMLElement;
 use Rolice\Econt\Exceptions\EcontException;
 
@@ -54,13 +55,23 @@ class Econt
     /**
      * Builds an Econt-compatible XML request
      * @param SimpleXMLElement $xml Currently scoped XML representation object.
-     * @param array $data A user-defined, custom request structure for the XML file.
+     * @param SimpleXMLElement|array $data A user-defined, custom request structure for the XML file.
      * @return string Serialized result in XML format.
      */
-    protected function build(SimpleXMLElement $xml, array $data)
+    protected function build(SimpleXMLElement $xml, $data)
     {
         foreach ($data as $key => $value) {
-            if (!is_scalar($value)) {
+            if($value instanceof ComponentInterface) {
+                $key = $value->tag();
+                $value = $value->toArray();
+            }
+
+            if($value instanceof SimpleXMLElement) {
+                $xml->addChild($key, $value);
+                continue;
+            }
+
+            if (null !== $value && !is_scalar($value)) {
                 $nested = $xml->addChild($key);
                 $this->build($nested, $value);
                 continue;
@@ -112,11 +123,6 @@ class Econt
         return $response;
     }
 
-    public final function order(Sender $sender, Receiver $receiver, Shipment $shipment)
-    {
-
-    }
-
     public final function request($type, array $data = [], $endpoint = Endpoint::SERVICE)
     {
         ini_set('memory_limit', '2G');
@@ -130,8 +136,13 @@ class Econt
             'request_type' => $type,
         ]);
 
-        $xml = new SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><request/>');
+        $tag = Endpoint::PARCEL ? 'parcels' : 'request';
+        $xml = new SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><' . $tag . '/>');
         $this->build($xml, $request);
+
+        header('Content-type: text/xml; charset=utf-8');
+        die($xml->asXML());
+
         $response = $this->parse($this->call($endpoint, $xml->asXML()));
 
         if (isset($response['error'])) {
