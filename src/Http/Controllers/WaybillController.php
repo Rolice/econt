@@ -24,9 +24,7 @@ class WaybillController extends Controller
 
         $loading = new Loading($sender, $receiver, $shipment, $payment, $services);
 
-        return $loading->serialize();
-
-        // $waybill = Waybill::issue();
+        return response()->make($loading->serialize()->asXML())->header('Content-Type', 'text/xml; charset=utf-8');
     }
 
 }

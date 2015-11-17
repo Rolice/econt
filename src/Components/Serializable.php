@@ -1,11 +1,19 @@
 <?php
 namespace Rolice\Econt\Components;
 
+use ReflectionClass;
+use Rolice\Econt\Exceptions\EcontException;
 use SimpleXMLElement;
+use Rolice\Econt\Components\ComponentInterface;
 
+/**
+ * Class Serializable
+ * Trait providing, common, basic, uni-purpose serialization of ComponentInterface object to XML
+ * @package Rolice\Econt\Components
+ * @verion 1.0
+ */
 trait Serializable
 {
-    protected $serializationRootElement = null;
 
     /**
      * Serializes an object for subsequent XML communication.
@@ -13,21 +21,52 @@ trait Serializable
      */
     public function serialize()
     {
-        $result = new SimpleXMLElement($this->serializationRootElement ? "<{$this->serializationRootElement}/>" : null);
-        $this->build($result, (array) $this);
+        $result = new SimpleXMLElement("<{$this->tag()}/>");
+        $this->build($result, $this);
 
         return $result;
+    }
+
+    public function tag()
+    {
+        return (new ReflectionClass($this))->getShortName();
     }
 
     /**
      * Builds an Econt-compatible XML request
      * @param SimpleXMLElement $xml Currently scoped XML representation object.
-     * @param array $data A user-defined, custom request structure for the XML file.
+     * @param ComponentInterface|array $data A user-defined, custom request structure for the XML file.
      */
-    protected function build(SimpleXMLElement $xml, array $data)
+    protected function build(SimpleXMLElement $xml, $data)
     {
-        foreach ($data as $key => $value) {
-            if (!is_scalar($value)) {
+        if (!is_object($data) && !is_array($data)) {
+            throw new EcontException('Invalid entity for serialization. An implementation of ComponentInterface or array required.');
+        }
+
+        if (is_object($data) && !($data instanceof ComponentInterface)) {
+            throw new EcontException('An object given is not an implementation of class ComponentInterface.');
+        }
+
+        $reflected = !is_array($data);
+        $iterator = $reflected ? (new ReflectionClass($data))->getProperties() : $data;
+
+        foreach ($iterator as $key => $value) {
+            if ($reflected) {
+                if (0 === strpos($value->getName(), '_')) {
+                    continue;
+                }
+
+                $value->setAccessible(true);
+            }
+
+            $key = $reflected ? $value->getName() : $key;
+            $value = $reflected ? $value->getValue($data) : $value;
+
+            if (null !== $value && !is_scalar($value)) {
+                if (is_object($value) && !($value instanceof ComponentInterface)) {
+                    continue;
+                }
+
                 $nested = $xml->addChild($key);
                 $this->build($nested, $value);
                 continue;
