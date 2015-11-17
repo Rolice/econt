@@ -11,6 +11,8 @@ namespace Rolice\Econt\Components;
 class Loading implements ComponentInterface
 {
 
+    use Serializable;
+
     /**
      * The sender of this load
      * @var Sender
