@@ -5,7 +5,7 @@ use App;
 
 class Locale {
 
-    public function __callStatic($method) {
+    public static function __callStatic($method, $args = []) {
         $postfix = 'bg' !== App::getLocale() ? '_en' : '';
 
         return $method . $postfix;
