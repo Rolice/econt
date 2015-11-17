@@ -2,13 +2,13 @@
 namespace Rolice\Econt\Components;
 
 /**
- * Class Row
+ * Class Loading
  * Class representing single load for courier service
  * @package Rolice\Econt\Component
  * @version 0.1
  * @access public
  */
-class Row implements ComponentInterface
+class Loading implements ComponentInterface
 {
 
     /**

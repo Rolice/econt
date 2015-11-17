@@ -117,7 +117,7 @@ class Econt
 
     }
 
-    public final function request($type, array $data = [])
+    public final function request($type, array $data = [], $endpoint = Endpoint::SERVICE)
     {
         ini_set('memory_limit', '2G');
         ini_set('max_execution_time', '0');
@@ -132,7 +132,7 @@ class Econt
 
         $xml = new SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><request/>');
         $this->build($xml, $request);
-        $response = $this->parse($this->call(Endpoint::SERVICE, $xml->asXML()));
+        $response = $this->parse($this->call($endpoint, $xml->asXML()));
 
         if (isset($response['error'])) {
             $message = isset($response['error']['message']) ? $response['error']['message'] : null;
