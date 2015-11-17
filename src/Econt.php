@@ -5,9 +5,9 @@ namespace Rolice\Econt;
 use App;
 use Config;
 use Exception;
-use Rolice\Econt\Components\ComponentInterface;
 use SimpleXMLElement;
 use Rolice\Econt\Exceptions\EcontException;
+use Rolice\Econt\Components\ComponentInterface;
 
 /**
  * Class Econt

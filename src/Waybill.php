@@ -19,16 +19,8 @@ use Rolice\Econt\Components\Services;
  */
 class Waybill
 {
-    public static function issue()
+    public static function issue(Sender $sender, Receiver $receiver, Shipment $shipment, Payment $payment, Services $services)
     {
-        $sender = new Sender;
-        $receiver = new Receiver;
-        $shipment = new Shipment;
-        $payment = new Payment;
-        $services = new Services;
-
-        $loading = new Loading($sender, $receiver, $shipment, $payment, $services);
-
         $data = [
             'system' => [
                 'validate' => 0,
@@ -37,7 +29,7 @@ class Waybill
             ],
 
             'loadings' => [
-                $loading,
+                new Loading($sender, $receiver, $shipment, $payment, $services),
             ],
         ];
 
