@@ -52,6 +52,12 @@ class Econt
         $self->password = $password;
     }
 
+    public static function test()
+    {
+        $self = App::make('Econt');
+        return $self->request(RequestType::PROFILE);
+    }
+
     /**
      * Builds an Econt-compatible XML request
      * @param SimpleXMLElement $xml Currently scoped XML representation object.

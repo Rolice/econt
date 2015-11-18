@@ -4,6 +4,8 @@ Route::group(['prefix' => 'econt'], function () {
     Route::get('zones', ['as' => 'econt.zones', 'uses' => 'Rolice\Econt\Http\Controllers\EcontController@zones']);
     Route::get('neighbourhoods', ['as' => 'econt.neighbourhoods', 'uses' => 'Rolice\Econt\Http\Controllers\EcontController@neighbourhoods']);
 
+    Route::post('test', ['as' => 'econt.test', 'uses' => 'Rolice\Econt\Http\Controllers\EcontController@test']);
+
     Route::get('settlements', ['as' => 'econt.settlements', 'uses' => 'Rolice\Econt\Http\Controllers\SettlementController@index']);
     Route::get('settlements/autocomplete', [ 'as' => 'econt.settlements.autocomplete', 'uses' => 'Rolice\Econt\Http\Controllers\SettlementController@autocomplete']);
 
