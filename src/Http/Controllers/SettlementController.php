@@ -16,9 +16,9 @@ class SettlementController extends Controller
 
     public function autocomplete()
     {
-        $name = Input::get('query');
+        $name = htmlentities(Input::get('query'), ENT_QUOTES, 'UTF-8', false);
 
-        return Settlement::where('name', 'LIKE', "%$name%")->orWhere('name_en', 'LIKE', "%name%")->get();
+        return Settlement::where('name', 'LIKE', "%$name%")->orWhere('name_en', 'LIKE', "%$name%")->get();
     }
 
 }
