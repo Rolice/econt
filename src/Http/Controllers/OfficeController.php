@@ -9,6 +9,9 @@ use Rolice\Econt\Helpers\Locale;
 
 class OfficeController extends Controller
 {
+
+    const MIN_AUTOCOMPLETE_LENGTH = 3;
+
     public function index()
     {
         return Office::orderBy(Locale::name())->get();
@@ -35,4 +38,5 @@ class OfficeController extends Controller
             'more' => false,
         ];
     }
+
 }
