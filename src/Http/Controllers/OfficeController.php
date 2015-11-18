@@ -1,6 +1,8 @@
 <?php
 namespace Rolice\Econt\Http\Controllers;
 
+use Input;
+
 use App\Http\Controllers\Controller;
 use Rolice\Econt\Models\Office;
 use Rolice\Econt\Helpers\Locale;
