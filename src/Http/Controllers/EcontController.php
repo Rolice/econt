@@ -15,11 +15,6 @@ class EcontController extends Controller
         return Zone::orderBy('name')->get();
     }
 
-    public function settlements()
-    {
-        return Settlement::with('country')->orderBy('name')->get();
-    }
-
     public function neighbourhoods()
     {
         return Neighbourhood::orderBy('name')->get();
