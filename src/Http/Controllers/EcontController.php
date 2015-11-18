@@ -20,9 +20,4 @@ class EcontController extends Controller
         return Neighbourhood::orderBy('name')->get();
     }
 
-    public function streets()
-    {
-        return Street::orderBy('name')->get();
-    }
-
 }

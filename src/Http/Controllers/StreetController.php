@@ -6,14 +6,14 @@ use Input;
 use App\Http\Controllers\Controller;
 use Rolice\Econt\Models\Settlement;
 
-class SettlementController extends Controller
+class StreetController extends Controller
 {
 
     const MIN_AUTOCOMPLETE_LENGTH = 3;
 
     public function index()
     {
-        return Settlement::with('country')->orderBy('name')->get();
+        return Street::orderBy('name')->get();
     }
 
     public function autocomplete()
@@ -25,7 +25,7 @@ class SettlementController extends Controller
             return [ 'results' => [], 'more' => false ];
         }
 
-        $result = Settlement::where('name', 'LIKE', "%$name%")->orWhere('name_en', 'LIKE', "%$name%")->get(['id', 'bg' === $lang ? 'name' : 'name_en AS name']);
+        $result = Street::where('name', 'LIKE', "%$name%")->orWhere('name_en', 'LIKE', "%$name%")->get(['id', 'bg' === $lang ? 'name' : 'name_en AS name']);
 
         return [
             'results' => $result,
