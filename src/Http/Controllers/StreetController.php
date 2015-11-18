@@ -4,7 +4,7 @@ namespace Rolice\Econt\Http\Controllers;
 use Input;
 
 use App\Http\Controllers\Controller;
-use Rolice\Econt\Models\Settlement;
+use Rolice\Econt\Models\Street;
 
 class StreetController extends Controller
 {
