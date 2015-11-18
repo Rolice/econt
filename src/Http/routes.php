@@ -12,6 +12,7 @@ Route::group(['prefix' => 'econt'], function () {
 
     Route::get('offices', ['as' => 'econt.offices', 'uses' => 'Rolice\Econt\Http\Controllers\Office@index']);
     Route::get('offices/dropdown', [ 'as' => 'econt.offices.dropdown', 'uses' => 'Rolice\Econt\Http\Controllers\OfficeController@dropdown']);
+    Route::get('offices/autocomplete', [ 'as' => 'econt.offices.autocomplete', 'uses' => 'Rolice\Econt\Http\Controllers\OfficeController@autocomplete']);
 
     Route::get('waybill', ['as' => 'econt.waybill', 'uses' => 'Rolice\Econt\Http\Controllers\WaybillController@issue']);
 });
