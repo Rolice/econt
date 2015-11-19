@@ -34,7 +34,7 @@ class Waybill
         ];
 
         $econt = App::make('Econt');
-        $waybill = $econt->request(RequestType::SHIPPING, $data, Endpoint::PARCEL);
+        $waybill = $econt->request(RequestType::SHIPPING, $data, Endpoint::parcel());
 
         return $waybill;
     }

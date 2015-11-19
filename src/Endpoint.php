@@ -12,7 +12,20 @@ use Rolice\Econt\Exceptions\EcontException;
  */
 class Endpoint
 {
-    const PARCEL = 'http://demo.econt.com/e-econt/xml_parcel_import2.php';
-    const SERVICE = 'http://demo.econt.com/e-econt/xml_service_tool.php';
+    const PARCEL = 'http://econt.com/e-econt/xml_parcel_import2.php';
+    const SERVICE = 'http://econt.com/e-econt/xml_service_tool.php';
+
+    const PARCEL_DEMO = 'http://demo.econt.com/e-econt/xml_parcel_import2.php';
+    const SERVICE_DEMO = 'http://demo.econt.com/e-econt/xml_service_tool.php';
+
+    public static function parcel()
+    {
+        return 'production' !== env('ENVIRONMENT', 'production') ? self::PARCEL : self::PARCEL_DEMO;
+    }
+
+    public static function service()
+    {
+        return 'production' !== env('ENVIRONMENT', 'production') ? self::SERVICE : self::SERVICE_DEMO;
+    }
 
 }
