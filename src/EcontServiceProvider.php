@@ -27,10 +27,10 @@ class EcontServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->publishes([__DIR__ . '/config/econt.php' => config_path('econt.php')], 'config');
-        $this->publishes([__DIR__ . '/database/migrations/' => database_path('migrations')], 'migrations');
+        $this->publishes([__DIR__ . '/../config/econt.php' => config_path('econt.php')], 'config');
+        $this->publishes([__DIR__ . '/../database/migrations/' => database_path('migrations')], 'migrations');
 
-        $this->mergeConfigFrom(__DIR__ . '/config/econt.php', 'econt');
+        $this->mergeConfigFrom(__DIR__ . '/../config/econt.php', 'econt');
 
         if (!$this->app->routesAreCached()) {
             require __DIR__ . '/Http/routes.php';
