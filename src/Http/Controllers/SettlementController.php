@@ -1,6 +1,8 @@
 <?php
 namespace Rolice\Econt\Http\Controllers;
 
+use App;
+use Lang;
 use Input;
 
 use App\Http\Controllers\Controller;
@@ -18,7 +20,6 @@ class SettlementController extends Controller
 
     public function autocomplete()
     {
-        $lang = Input::get('lang');
         $name = htmlentities(Input::get('query'), ENT_QUOTES, 'UTF-8', false);
 
         if (self::MIN_AUTOCOMPLETE_LENGTH > mb_strlen($name)) {
@@ -35,10 +36,11 @@ class SettlementController extends Controller
         $result = [];
 
         foreach ($settlements as $settlement) {
-            $name_col = 'bg' === $lang ? 'name' : 'name_en';
+            $name_col = 'bg' === App::getLocale() ? 'name' : 'name_en';
             $entry = [ 'id' => $settlement->id, 'name' => $settlement->$name_col ];
 
             $entry['name'] = "{$entry['name']} ({$settlement->post_code})";
+            $entry['name'] = Lang::get('econt::econt.settlement.type.' . $settlement->type) . ' ' . $entry['name'];
 
             $result[] = (object) $entry;
         }

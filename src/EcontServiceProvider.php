@@ -32,6 +32,8 @@ class EcontServiceProvider extends ServiceProvider
 
         $this->mergeConfigFrom(__DIR__ . '/../config/econt.php', 'econt');
 
+        $this->loadTranslationsFrom($this->app->basePath(). '/vendor/rolice/econt/resources/lang', 'econt');
+
         if (!$this->app->routesAreCached()) {
             require __DIR__ . '/Http/routes.php';
         }

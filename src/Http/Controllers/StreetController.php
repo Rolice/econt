@@ -1,6 +1,7 @@
 <?php
 namespace Rolice\Econt\Http\Controllers;
 
+use App;
 use Input;
 
 use App\Http\Controllers\Controller;
@@ -18,7 +19,6 @@ class StreetController extends Controller
 
     public function autocomplete()
     {
-        $lang = Input::get('lang');
         $settlement = (int)Input::get('settlement');
         $name = htmlentities(Input::get('query'), ENT_QUOTES, 'UTF-8', false);
 
@@ -30,7 +30,7 @@ class StreetController extends Controller
             ->whereNested(function ($query) use ($name) {
                 $query->where('name', 'LIKE', "%$name%")->orWhere('name_en', 'LIKE', "%$name%");
             })
-            ->get(['id', 'bg' === $lang ? 'name' : 'name_en AS name']);
+            ->get(['id', 'bg' === App::getLocale() ? 'name' : 'name_en AS name']);
 
         return [
             'results' => $result,
