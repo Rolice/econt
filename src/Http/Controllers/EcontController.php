@@ -36,14 +36,5 @@ class EcontController extends Controller
         Econt::test();
     }
 
-    public function calculate()
-    {
-        $sender = new Sender;
-        $sender->city = Input::get('sender.settlement');
 
-        $receiver = new Receiver;
-        $receiver->city = Settlement::find(Input::get('receiver.settlement'))->name;
-
-        //Waybill::calculate();
-    }
 }
