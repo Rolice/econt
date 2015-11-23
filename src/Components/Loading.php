@@ -57,4 +57,9 @@ class Loading implements ComponentInterface
         $this->services = $services;
     }
 
+    public function tag()
+    {
+        return 'row';
+    }
+
 }
