@@ -20,7 +20,7 @@ class Shipment implements ComponentInterface
         $sender = 'office' === $sender_pickup ? 'OFFICE' : 'ADDRESS';
         $receiver = 'office' === $receiver_pickup ? 'OFFICE' : 'ADDRESS';
 
-        return "{$sender}_{$receiver}";
+        $this->tariff_sub_code = "{$sender}_{$receiver}";
     }
 
 }
