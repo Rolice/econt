@@ -10,6 +10,7 @@ use Rolice\Econt\Components\Receiver;
 use Rolice\Econt\Components\Shipment;
 use Rolice\Econt\Components\Payment;
 use Rolice\Econt\Components\Services;
+use Rolice\Econt\Exceptions\EcontException;
 
 /**
  * Class Waybill
@@ -35,6 +36,14 @@ class Waybill
 
         $econt = App::make('Econt');
         $waybill = $econt->request(RequestType::SHIPPING, $data, Endpoint::parcel());
+
+        if(!isset($waybill['result']) || !isset($waybill['result']['e'])) {
+            throw new EcontException('Invalid response from Econt parcel service.');
+        }
+
+        if(isset($waybill['result']['e']['error']) && $waybill['result']['e']['error']) {
+            throw new EcontException($waybill['result']['e']['error']);
+        }
 
         return $waybill;
     }
