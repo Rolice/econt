@@ -105,6 +105,8 @@ class WaybillController extends Controller
         $shipment->pack_count = (int) Input::get('shipment.count');
         $shipment->weight = (float) Input::get('shipment.weight');
 
+        $shipment->setTrariffSubCode(Input::get('sender.pickup'), Input::get('receiver.pickup'));
+
         return $shipment;
     }
 }
