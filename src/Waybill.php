@@ -3,6 +3,7 @@ namespace Rolice\Econt;
 
 use App;
 
+use rest\server\user\Load;
 use Rolice\Econt\Components\Loading;
 use Rolice\Econt\Components\Sender;
 use Rolice\Econt\Components\Receiver;
@@ -19,17 +20,16 @@ use Rolice\Econt\Components\Services;
  */
 class Waybill
 {
-    public static function issue(Sender $sender, Receiver $receiver, Shipment $shipment, Payment $payment, Services $services)
+    protected static function _call(Loading $loading, $calc)
     {
         $data = [
             'system' => [
                 'validate' => 0,
                 'response_type' => 'XML',
-                'only_calculate' => 1,
+                'only_calculate' => (int)!!$calc,
             ],
-
             'loadings' => [
-                new Loading($sender, $receiver, $shipment, $payment, $services),
+                $loading,
             ],
         ];
 
@@ -37,5 +37,15 @@ class Waybill
         $waybill = $econt->request(RequestType::SHIPPING, $data, Endpoint::parcel());
 
         return $waybill;
+    }
+
+    public static function issue(Loading $loading)
+    {
+        return self::_call($loading, false);
+    }
+
+    public static function calculate(Loading $loading)
+    {
+        return self::_call($loading, true);
     }
 }

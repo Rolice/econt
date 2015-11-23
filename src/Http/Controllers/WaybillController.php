@@ -23,4 +23,9 @@ class WaybillController extends Controller
         return Waybill::issue($sender, $receiver, $shipment, $payment, $services);
     }
 
+    public function calculate()
+    {
+
+    }
+
 }
