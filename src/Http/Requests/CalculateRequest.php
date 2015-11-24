@@ -30,9 +30,7 @@ class CalculateRequest extends Request {
             'receiver.pickup' => 'required|in:address,office',
             'receiver.office' => "required_if:receiver.pickup,office|exists:$db.econt_offices,id",
 
-            'shipment.num' => 'required',
             'shipment.type' => 'required',
-//            'shipment.description' => 'required',
             'shipment.count' => 'required|integer|min:1',
             'shipment.weight' => 'required|numeric|min:0.001',
         ];
