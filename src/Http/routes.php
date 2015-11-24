@@ -15,6 +15,7 @@ Route::group(['prefix' => 'econt', 'middleware' => 'Rolice\Econt\Http\Middleware
     Route::get('offices', ['as' => 'econt.offices', 'uses' => 'Rolice\Econt\Http\Controllers\Office@index']);
     Route::get('offices/dropdown', [ 'as' => 'econt.offices.dropdown', 'uses' => 'Rolice\Econt\Http\Controllers\OfficeController@dropdown']);
     Route::get('offices/autocomplete', [ 'as' => 'econt.offices.autocomplete', 'uses' => 'Rolice\Econt\Http\Controllers\OfficeController@autocomplete']);
+    Route::get('offices/autocomplete/name', [ 'as' => 'econt.offices.autocomplete.name', 'uses' => 'Rolice\Econt\Http\Controllers\OfficeController@autocompleteBySettlementName']);
 
     Route::post('waybill/issue', ['as' => 'econt.waybill.issue', 'uses' => 'Rolice\Econt\Http\Controllers\WaybillController@issue']);
     Route::post('waybill/calculate', [ 'as' => 'econt.waybill.calculate', 'uses' => 'Rolice\Econt\Http\Controllers\WaybillController@calculate']);

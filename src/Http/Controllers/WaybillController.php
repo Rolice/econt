@@ -32,7 +32,7 @@ class WaybillController extends Controller
         return Waybill::issue($sender, $receiver, $shipment, $payment, $services);
     }
 
-    public function calculate(WaybillRequest $request)
+    public function calculate(CalculateRequest $request)
     {
         $sender = $this->_sender();
         $receiver = $this->_receiver();
