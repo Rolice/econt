@@ -37,8 +37,6 @@ class Waybill
         $econt = App::make('Econt');
         $waybill = $econt->request(RequestType::SHIPPING, $data, Endpoint::parcel());
 
-        die($waybill);
-
         if(!isset($waybill['result']) || !isset($waybill['result']['e'])) {
             throw new EcontException('Invalid response from Econt parcel service.');
         }
