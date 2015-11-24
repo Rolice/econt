@@ -7,6 +7,7 @@ use Input;
 use App\Http\Controllers\Controller;
 use Rolice\Econt\Models\Office;
 use Rolice\Econt\Helpers\Locale;
+use Rolice\Econt\Models\Settlement;
 
 class OfficeController extends Controller
 {
@@ -46,16 +47,16 @@ class OfficeController extends Controller
 
     public function autocompleteBySettlementName()
     {
-        $settlement = Input::get('settlement');
+        $settlement = htmlentities(Input::get('settlement'), ENT_QUOTES, 'UTF-8', false);
         $name = htmlentities(Input::get('query'), ENT_QUOTES, 'UTF-8', false);
+
+        $settlement = Settlement::where('name', 'LIKE', "$settlement%")->orWhere('name_en', 'LIKE', "$settlement%")->first();
 
         if (!$settlement) {
             return ['results' => [], 'more' => false];
         }
 
-        $result = Office::whereHas('settlement', function($query) use ($settlement) {
-            $query->where('name', 'LIKE', "%$settlement%")->orWhere('name_en', 'LIKE', "%$settlement%");
-        })
+        $result = Office::where('city_id', $settlement->id)
             ->whereNested(function ($query) use ($name) {
                 $query->where('name', 'LIKE', "%$name%")->orWhere('name_en', 'LIKE', "%$name%");
             })

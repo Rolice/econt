@@ -26,13 +26,13 @@ class CalculateRequest extends Request {
             'sender.pickup' => 'required|in:address,office',
             'sender.office' => "required_if:sender.pickup,office|exists:$db.econt_offices,id",
 
-            'receiver.settlement' => "required|integer|exists:$db.econt_settlements,id",
+            'receiver.settlement' => "required|min:2",
             'receiver.pickup' => 'required|in:address,office',
             'receiver.office' => "required_if:receiver.pickup,office|exists:$db.econt_offices,id",
 
             'shipment.num' => 'required',
             'shipment.type' => 'required',
-            'shipment.description' => 'required',
+//            'shipment.description' => 'required',
             'shipment.count' => 'required|integer|min:1',
             'shipment.weight' => 'required|numeric|min:0.001',
         ];

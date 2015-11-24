@@ -17,8 +17,8 @@ class Shipment implements ComponentInterface
 
     public function setTrariffSubCode($sender_pickup, $receiver_pickup)
     {
-        $sender = 'office' === $sender_pickup ? 'OFFICE' : 'ADDRESS';
-        $receiver = 'office' === $receiver_pickup ? 'OFFICE' : 'ADDRESS';
+        $sender = 'office' === $sender_pickup ? 'OFFICE' : 'DOOR';
+        $receiver = 'office' === $receiver_pickup ? 'OFFICE' : 'DOOR';
 
         $this->tariff_sub_code = "{$sender}_{$receiver}";
     }

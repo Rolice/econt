@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use rest\server\user\Load;
 use Rolice\Econt\Components\Loading;
 use Rolice\Econt\Exceptions\EcontException;
-use Rolice\Econt\Http\Requests\WaybillRequest;
+use Rolice\Econt\Http\Requests\CalculateRequest;
 use Rolice\Econt\Models\Office;
 use Rolice\Econt\Models\Settlement;
 use Rolice\Econt\Components\Payment;
@@ -34,8 +34,8 @@ class WaybillController extends Controller
 
     public function calculate(CalculateRequest $request)
     {
-        $sender = $this->_sender();
-        $receiver = $this->_receiver();
+        $sender = $this->_senderCalc();
+        $receiver = $this->_receiverCalc();
         $shipment = $this->_shipment();
         $payment = new Payment;
         $services = new Services;
@@ -70,6 +70,23 @@ class WaybillController extends Controller
         return $sender;
     }
 
+    protected function _senderCalc()
+    {
+        $settlement = Settlement::find((int)Input::get('sender.settlement'));
+
+        $sender = new Sender;
+        $sender->city = $settlement->name;
+        $sender->post_code = $settlement->post_code;
+
+        switch (Input::get('sender.pickup')) {
+            case 'office':
+                $sender->office_code = Office::find((int)Input::get('sender.office'))->code;
+                break;
+        }
+
+        return $sender;
+    }
+
     protected function _receiver()
     {
         $settlement = Settlement::find((int)Input::get('receiver.settlement'));
@@ -94,6 +111,22 @@ class WaybillController extends Controller
 
         return $receiver;
     }
+
+    protected function _receiverCalc()
+    {
+        $receiver = new Receiver;
+        $receiver->city = Input::get('receiver.settlement');
+        $receiver->post_code = Input::get('receiver.post_code');
+
+        switch (Input::get('receiver.pickup')) {
+            case 'office':
+                $receiver->office_code = Office::find((int)Input::get('receiver.office'))->code;
+                break;
+        }
+
+        return $receiver;
+    }
+
 
     protected function _shipment()
     {
