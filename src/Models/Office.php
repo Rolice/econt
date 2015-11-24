@@ -57,7 +57,7 @@ class Office extends Model implements ImportInterface
         $this->setConnection(Config::get('econt.connection'));
     }
 
-    public function city()
+    public function settlement()
     {
         return $this->belongsTo('Rolice\Econt\Models\Settlement', 'city_id');
     }
