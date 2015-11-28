@@ -29,6 +29,7 @@ class Waybill
                 'response_type' => 'XML',
                 'only_calculate' => (int)!!$calc,
             ],
+
             'loadings' => [
                 $loading,
             ],
@@ -42,7 +43,7 @@ class Waybill
         }
 
         if(isset($waybill['result']['e']['error']) && $waybill['result']['e']['error']) {
-            throw new EcontException($waybill['result']['e']['error']);
+            throw new EcontException(strip_tags(preg_replace('#<br[\s\t\r\n]*/?>#', "\n", $waybill['result']['e']['error'])));
         }
 
         return $waybill;

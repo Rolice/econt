@@ -3,11 +3,15 @@ namespace Rolice\Econt\Http\Controllers;
 
 use Input;
 
+use DateTime;
+
 use App\Http\Controllers\Controller;
-use rest\server\user\Load;
+use League\Flysystem\Exception;
+use Rolice\Econt\Components\CourierRequest;
 use Rolice\Econt\Components\Loading;
 use Rolice\Econt\Exceptions\EcontException;
 use Rolice\Econt\Http\Requests\CalculateRequest;
+use Rolice\Econt\Http\Requests\WaybillRequest;
 use Rolice\Econt\Models\Office;
 use Rolice\Econt\Models\Settlement;
 use Rolice\Econt\Components\Payment;
@@ -21,15 +25,18 @@ use Rolice\Econt\Waybill;
 class WaybillController extends Controller
 {
 
-    public function issue()
+    public function issue(WaybillRequest $request)
     {
-        $sender = new Sender;
-        $receiver = new Receiver;
-        $shipment = new Shipment;
+        $sender = $this->_sender();
+        $receiver = $this->_receiver();
+        $shipment = $this->_shipment();
+        $courier = $this->_courier($shipment);
         $payment = new Payment;
-        $services = new Services;
+        $services = $this->_services();
 
-        return Waybill::issue($sender, $receiver, $shipment, $payment, $services);
+        $loading = new Loading($sender, $receiver, $shipment, $payment, $services, $courier);
+
+        return Waybill::issue($loading);
     }
 
     public function calculate(CalculateRequest $request)
@@ -59,7 +66,10 @@ class WaybillController extends Controller
             case 'address':
                 $sender->street = Street::find((int)Input::get('sender.street'))->name;
                 $sender->street_num = Input::get('sender.street_num');
-                $sender->street_num = Input::get('sender.street_vh');
+                $sender->street_vh = Input::get('sender.street_vh');
+                $sender->street_et = Input::get('sender.street_et');
+                $sender->street_ap = Input::get('sender.street_ap');
+                $sender->street_other = Input::get('sender.street_other');
                 break;
 
             case 'office':
@@ -101,7 +111,10 @@ class WaybillController extends Controller
             case 'address':
                 $receiver->street = Street::find((int)Input::get('receiver.street'))->name;
                 $receiver->street_num = Input::get('receiver.street_num');
-                $receiver->street_num = Input::get('receiver.street_vh');
+                $receiver->street_vh = Input::get('receiver.street_vh');
+                $receiver->street_et = Input::get('receiver.street_et');
+                $receiver->street_ap = Input::get('receiver.street_ap');
+                $receiver->street_other = Input::get('receiver.street_other');
                 break;
 
             case 'office':
@@ -135,12 +148,49 @@ class WaybillController extends Controller
         $shipment->envelope_num = Input::get('shipment.num');
         $shipment->shipment_type = Input::get('shipment.type');
         $shipment->description = Input::get('shipment.description');
-        $shipment->pack_count = (int) Input::get('shipment.count');
-        $shipment->weight = (float) Input::get('shipment.weight');
-        $shipment->pay_after_accept = true;
+        $shipment->pack_count = (int)Input::get('shipment.count');
+        $shipment->weight = (float)Input::get('shipment.weight');
+        $shipment->pay_after_accept = (int)!!Input::get('shipment.pay_after_accept');
+        $shipment->pay_after_test = (int)!!Input::get('shipment.pay_after_test');
 
         $shipment->setTrariffSubCode(Input::get('sender.pickup'), Input::get('receiver.pickup'));
 
         return $shipment;
+    }
+
+    protected function _courier(Shipment &$shipment)
+    {
+        $date = Input::get('courier.date');
+        $from = Input::get('courier.time_from');
+        $to = Input::get('courier.time_to');
+
+        if (!$date) {
+            return null;
+        }
+
+        $from = DateTime::createFromFormat('Y-m-d H:i', "$date $from");
+        $to = DateTime::createFromFormat('Y-m-d H:i', "$date $to");
+
+        if (!$from || !$to) {
+            return null;
+        }
+
+        $courier = new CourierRequest($shipment, $from, $to);
+
+        return $courier;
+    }
+
+    protected function _services()
+    {
+        $dp = Input::get('services.dp');
+        $oc = (float) Input::get('services.oc');
+        $oc_currency = Input::get('services.oc_currency');
+
+        $services = new Services;
+        $services->dp = $dp ? 'ON' : null;
+        $services->oc = 0 < $oc && preg_match('#[A-Z]{3}#', $oc_currency) ? $oc : null;
+        $services->oc_currency = 0 < $oc && preg_match('#[A-Z]{3}#', $oc_currency) ? $oc_currency : null;
+
+        return $services;
     }
 }

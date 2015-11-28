@@ -19,4 +19,6 @@ Route::group(['prefix' => 'econt', 'middleware' => 'Rolice\Econt\Http\Middleware
 
     Route::post('waybill/issue', ['as' => 'econt.waybill.issue', 'uses' => 'Rolice\Econt\Http\Controllers\WaybillController@issue']);
     Route::post('waybill/calculate', [ 'as' => 'econt.waybill.calculate', 'uses' => 'Rolice\Econt\Http\Controllers\WaybillController@calculate']);
+
+    Route::get('shipment/types', [ 'as' => 'econt.shipment.types', 'uses' => 'Rolice\Econt\Http\Controllers\ShipmentController@index']);
 });

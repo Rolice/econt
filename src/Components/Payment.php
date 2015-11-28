@@ -14,7 +14,7 @@ class Payment implements ComponentInterface
     public $side;
     public $method;
 
-    public function __construct($side = self::RECEIVER, $method = self::COD)
+    public function __construct($side = self::SENDER, $method = self::COD)
     {
         $this->side = $side;
         $this->method = $method;

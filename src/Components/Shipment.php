@@ -14,6 +14,8 @@ class Shipment implements ComponentInterface
     public $tariff_code;
     public $tariff_sub_code;
     public $pay_after_accept;
+    public $pay_after_test;
+    public $send_date;
 
     public function setTrariffSubCode($sender_pickup, $receiver_pickup)
     {

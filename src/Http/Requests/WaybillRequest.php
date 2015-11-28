@@ -1,8 +1,10 @@
 <?php
 namespace Rolice\Econt\Http\Requests;
 
+use Input;
 use Config;
 use App\Http\Requests\Request;
+use Rolice\Econt\Exceptions\EcontException;
 
 class WaybillRequest extends Request {
 
@@ -21,7 +23,7 @@ class WaybillRequest extends Request {
     {
         $db = Config::get('econt.connection');
 
-        return [
+        $rules = [
             'sender.name' => 'required',
             'sender.phone' => 'required',
             'sender.settlement' => "required|integer|exists:$db.econt_settlements,id",
@@ -36,8 +38,8 @@ class WaybillRequest extends Request {
             'receiver.settlement' => "required|integer|exists:$db.econt_settlements,id",
             'receiver.pickup' => 'required|in:address,office',
             'receiver.street' => "required_if:receiver.pickup,address|exists:$db.econt_streets,id",
-            'receiver.street_num' => 'required_if:receiver.pickup,address',
-            'receiver.street_vh' => 'required_if:receiver.pickup,address',
+//            'receiver.street_num' => 'required_if:receiver.pickup,address',
+//            'receiver.street_vh' => 'required_if:receiver.pickup,address',
             'receiver.office' => "required_if:receiver.pickup,office|exists:$db.econt_offices,id",
 
             'shipment.num' => 'required',
@@ -46,6 +48,14 @@ class WaybillRequest extends Request {
             'shipment.count' => 'required|integer|min:1',
             'shipment.weight' => 'required|numeric|min:0.001',
         ];
+
+        if(Input::get('courier.date')) {
+            $rules['courier.date'] = 'date_format:Y-m-d';
+            $rules['courier.time_from'] = 'required_with:courier.date|date_format:H:i';
+            $rules['courier.time_to'] = 'required_with:courier.date|date_format:H:i';
+        }
+
+        return $rules;
     }
 
 }
