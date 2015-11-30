@@ -42,6 +42,8 @@ class SettlementController extends Controller
             $entry['name'] = "{$entry['name']} ({$settlement->post_code})";
             $entry['name'] = Lang::get('econt::econt.settlement.type.' . $settlement->type) . ' ' . $entry['name'];
 
+            $entry['ref'] = $settlement->$name_col;
+
             $result[] = (object) $entry;
         }
 

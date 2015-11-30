@@ -31,7 +31,7 @@ class WaybillController extends Controller
         $receiver = $this->_receiver();
         $shipment = $this->_shipment();
         $courier = $this->_courier($shipment);
-        $payment = new Payment;
+        $payment = $this->_payment();
         $services = $this->_services();
 
         $loading = new Loading($sender, $receiver, $shipment, $payment, $services, $courier);
@@ -44,8 +44,8 @@ class WaybillController extends Controller
         $sender = $this->_senderCalc();
         $receiver = $this->_receiverCalc();
         $shipment = $this->_shipment();
-        $payment = new Payment;
-        $services = new Services;
+        $payment = $this->_payment();
+        $services = $this->_services();
 
         $loading = new Loading($sender, $receiver, $shipment, $payment, $services);
 
@@ -152,6 +152,7 @@ class WaybillController extends Controller
         $shipment->weight = (float)Input::get('shipment.weight');
         $shipment->pay_after_accept = (int)!!Input::get('shipment.pay_after_accept');
         $shipment->pay_after_test = (int)!!Input::get('shipment.pay_after_test');
+        $shipment->invoice_before_pay_CD = (int) !!Input::get('shipment.invoice_before_pay');
 
         $shipment->setTrariffSubCode(Input::get('sender.pickup'), Input::get('receiver.pickup'));
 
@@ -180,16 +181,29 @@ class WaybillController extends Controller
         return $courier;
     }
 
+    protected function _payment()
+    {
+        $payment = new Payment(PAYMENT::RECEIVER === Input::get('payment.side') ? Payment::RECEIVER : Payment::SENDER);
+        return $payment;
+    }
+
     protected function _services()
     {
         $dp = Input::get('services.dp');
+        $cd = (float) Input::get('services.cd');
         $oc = (float) Input::get('services.oc');
         $oc_currency = Input::get('services.oc_currency');
+        $cd_currency = Input::get('services.cd_currency');
+
 
         $services = new Services;
         $services->dp = $dp ? 'ON' : null;
+
         $services->oc = 0 < $oc && preg_match('#[A-Z]{3}#', $oc_currency) ? $oc : null;
         $services->oc_currency = 0 < $oc && preg_match('#[A-Z]{3}#', $oc_currency) ? $oc_currency : null;
+
+        $services->cd = 0 < $cd && preg_match('#[A-Z]{3}#', $cd_currency) ? $cd : null;
+        $services->oc_currency = 0 < $cd && preg_match('#[A-Z]{3}#', $cd_currency) ? $cd_currency : null;
 
         return $services;
     }
