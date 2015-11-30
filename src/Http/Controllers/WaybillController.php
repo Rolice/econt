@@ -203,7 +203,7 @@ class WaybillController extends Controller
         $services->oc_currency = 0 < $oc && preg_match('#[A-Z]{3}#', $oc_currency) ? $oc_currency : null;
 
         $services->cd = 0 < $cd && preg_match('#[A-Z]{3}#', $cd_currency) ? $cd : null;
-        $services->oc_currency = 0 < $cd && preg_match('#[A-Z]{3}#', $cd_currency) ? $cd_currency : null;
+        $services->cd_currency = 0 < $cd && preg_match('#[A-Z]{3}#', $cd_currency) ? $cd_currency : null;
 
         return $services;
     }
