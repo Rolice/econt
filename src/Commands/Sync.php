@@ -1,6 +1,7 @@
 <?php
 namespace Rolice\Econt\Commands;
 
+use DB;
 use App;
 use Illuminate\Console\Command;
 
@@ -35,6 +36,8 @@ class Sync extends Command
      */
     public function handle()
     {
+        DB::connection('econt')->disableQueryLog();
+
         $this->comment(PHP_EOL . 'Importing zones... Please wait.');
 
         Zone::whereRaw(1)->delete();

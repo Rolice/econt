@@ -20,12 +20,12 @@ class Endpoint
 
     public static function parcel()
     {
-        return 'production' !== env('ENVIRONMENT', 'production') ? self::PARCEL : self::PARCEL_DEMO;
+        return 'production' === env('ENVIRONMENT', 'production') ? self::PARCEL : self::PARCEL_DEMO;
     }
 
     public static function service()
     {
-        return 'production' !== env('ENVIRONMENT', 'production') ? self::SERVICE : self::SERVICE_DEMO;
+        return 'production' === env('ENVIRONMENT', 'production') ? self::SERVICE : self::SERVICE_DEMO;
     }
 
 }
