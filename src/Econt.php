@@ -13,7 +13,7 @@ use Rolice\Econt\Components\ComponentInterface;
  * Class Econt
  * Interface exported by this package to allow Econt integration.
  * @package Rolice\Econt
- * @version 0.1
+ * @version 1.0
  * @access public
  */
 class Econt

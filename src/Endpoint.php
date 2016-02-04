@@ -7,7 +7,7 @@ use Rolice\Econt\Exceptions\EcontException;
  * Class Endpoint
  * Class with constants, providing end-point addresses to Econt services.
  * @package Rolice\Econt
- * @version 0.1
+ * @version 1.0
  * @access public
  */
 class Endpoint

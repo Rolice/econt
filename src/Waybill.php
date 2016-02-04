@@ -16,7 +16,7 @@ use Rolice\Econt\Exceptions\EcontException;
  * Class Waybill
  * Interface exported by this package to allow creating/issuing new Econt waybills for printing.
  * @package Rolice\Econt
- * @version 0.1
+ * @version 1.0
  * @access public
  */
 class Waybill

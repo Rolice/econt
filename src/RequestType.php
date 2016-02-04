@@ -7,7 +7,7 @@ use Rolice\Econt\Exceptions\EcontException;
  * Class RequestType
  * Class with constants, providing valid, predefined Econt request types.
  * @package Rolice\Econt
- * @version 0.1
+ * @version 1.0
  * @access public
  */
 class RequestType
