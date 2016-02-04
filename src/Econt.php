@@ -119,7 +119,8 @@ class Econt
     {
         $ch = curl_init($endpoint);
 
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, ['xml' => $request]);
 
         $response = curl_exec($ch);
