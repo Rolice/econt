@@ -55,7 +55,7 @@ class Econt
     public static function test()
     {
         $self = App::make('Econt');
-        return $self->request(RequestType::PROFILE);
+        return $self->request(RequestType::COMPANY);
     }
 
     /**
