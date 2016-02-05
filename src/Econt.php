@@ -52,10 +52,22 @@ class Econt
         $self->password = $password;
     }
 
-    public static function test()
+    /**
+     * Returns personal profile information from Econt API.
+     * @return object
+     */
+    public static function profile()
     {
-        $self = App::make('Econt');
-        return $self->request(RequestType::COMPANY);
+        return App::make('Econt')->request(RequestType::PROFILE);
+    }
+
+    /**
+     * Returns corporate profile information from Econt API.
+     * @return object
+     */
+    public static function company()
+    {
+        return App::make('Econt')->request(RequestType::COMPANY);
     }
 
     /**

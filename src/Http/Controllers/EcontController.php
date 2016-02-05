@@ -27,13 +27,22 @@ class EcontController extends Controller
         return Neighbourhood::orderBy('name')->get();
     }
 
-    public function test()
+    public function profile()
     {
         $username = Input::get('username');
         $password = Input::get('password');
 
         Econt::setCredentials($username, $password);
-        Econt::test();
+        return Econt::profile();
+    }
+
+    public function company()
+    {
+        $username = Input::get('username');
+        $password = Input::get('password');
+
+        Econt::setCredentials($username, $password);
+        return Econt::company();
     }
 
 
