@@ -13,7 +13,6 @@ use Rolice\Econt\Exceptions\EcontException;
 class RequestType
 {
     const NONE = null;
-    const REGISTRATION = 'e_econt_registration';
     const ZONES = 'cities_zones';
     const REGIONS = 'cities_regions';
     const STREETS = 'cities_streets';
