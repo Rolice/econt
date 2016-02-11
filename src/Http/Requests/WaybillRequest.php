@@ -1,10 +1,10 @@
 <?php
 namespace Rolice\Econt\Http\Requests;
 
+use Lang;
 use Input;
 use Config;
 use App\Http\Requests\Request;
-use Rolice\Econt\Exceptions\EcontException;
 
 class WaybillRequest extends Request {
 
@@ -38,8 +38,6 @@ class WaybillRequest extends Request {
             'receiver.settlement' => "required|integer|exists:$db.econt_settlements,id",
             'receiver.pickup' => 'required|in:address,office',
             'receiver.street' => "required_if:receiver.pickup,address|exists:$db.econt_streets,id",
-//            'receiver.street_num' => 'required_if:receiver.pickup,address',
-//            'receiver.street_vh' => 'required_if:receiver.pickup,address',
             'receiver.office' => "required_if:receiver.pickup,office|exists:$db.econt_offices,id",
 
             'shipment.num' => 'required',
@@ -56,6 +54,46 @@ class WaybillRequest extends Request {
         }
 
         return $rules;
+    }
+
+    public function attributes()
+    {
+        $fields = [
+            'sender.name',
+            'sender.phone',
+            'sender.settlement',
+            'sender.pickup',
+            'sender.street',
+            'sender.street_num',
+            'sender.street_vh',
+            'sender.office',
+
+            'receiver.name',
+            'receiver.phone',
+            'receiver.settlement',
+            'receiver.pickup',
+            'receiver.street',
+            'receiver.office',
+
+            'shipment.num',
+            'shipment.type',
+            'shipment.description',
+            'shipment.count',
+            'shipment.weight',
+
+            'courier.date',
+            'courier.time_from',
+            'courier.time_to',
+        ];
+
+        $result = [];
+
+        foreach($fields as $field)
+        {
+            $result[$field] = Lang::get("econt.attributes.$field");
+        }
+
+        return $result;
     }
 
 }
