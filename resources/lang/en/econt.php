@@ -27,7 +27,7 @@ return [
         'shipment.num' => 'Shipment number',
         'shipment.type' => 'Type of shipment',
         'shipment.description' => 'Choose the type of the shipment',
-        'shipment.count' => 'Packаge quantity',
+        'shipment.count' => 'Package quantity',
         'shipment.weight' => 'Weight of shipment',
 
         'courier.date' => 'Data',
