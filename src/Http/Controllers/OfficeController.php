@@ -19,6 +19,11 @@ class OfficeController extends Controller
         return Office::orderBy(Locale::name())->get();
     }
 
+    public function show($id)
+    {
+        return Office::findOrNew($id);
+    }
+
     public function dropdown()
     {
         return Office::orderBy(Locale::name())->lists('name', 'id');
