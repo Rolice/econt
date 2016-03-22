@@ -1,9 +1,10 @@
 <?php
 namespace Rolice\Econt\Http\Controllers;
 
-use Input;
-
 use DateTime;
+
+use App;
+use Input;
 
 use App\Http\Controllers\Controller;
 use League\Flysystem\Exception;
@@ -34,6 +35,10 @@ class WaybillController extends Controller
         $payment = $this->_payment();
         $services = $this->_services();
 
+        if (($username = Input::get('client.username')) && ($password = Input::get('client.password'))) {
+            App::make('Econt')->setCredentials($username, $password);
+        }
+
         $loading = new Loading($sender, $receiver, $shipment, $payment, $services, $courier);
 
         return Waybill::issue($loading);
@@ -46,6 +51,10 @@ class WaybillController extends Controller
         $shipment = $this->_shipment();
         $payment = $this->_payment();
         $services = $this->_services();
+
+        if (($username = Input::get('client.username')) && ($password = Input::get('client.password'))) {
+            App::make('Econt')->setCredentials($username, $password);
+        }
 
         $loading = new Loading($sender, $receiver, $shipment, $payment, $services);
 
@@ -152,7 +161,7 @@ class WaybillController extends Controller
         $shipment->weight = (float)Input::get('shipment.weight');
         $shipment->pay_after_accept = (int)!!Input::get('shipment.pay_after_accept');
         $shipment->pay_after_test = (int)!!Input::get('shipment.pay_after_test');
-        $shipment->invoice_before_pay_CD = (int) !!Input::get('shipment.invoice_before_pay');
+        $shipment->invoice_before_pay_CD = (int)!!Input::get('shipment.invoice_before_pay');
 
         $shipment->setTrariffSubCode(Input::get('sender.pickup'), Input::get('receiver.pickup'));
 
@@ -190,8 +199,8 @@ class WaybillController extends Controller
     protected function _services()
     {
         $dp = Input::get('services.dp');
-        $cd = (float) Input::get('services.cd');
-        $oc = (float) Input::get('services.oc');
+        $cd = (float)Input::get('services.cd');
+        $oc = (float)Input::get('services.oc');
         $oc_currency = Input::get('services.oc_currency');
         $cd_currency = Input::get('services.cd_currency');
 
