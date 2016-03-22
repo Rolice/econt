@@ -90,7 +90,7 @@ class WaybillRequest extends Request {
 
         foreach($fields as $field)
         {
-            $result[$field] = Lang::get("econt.attributes.$field");
+            $result[$field] = Lang::get("econt::econt.attributes.$field");
         }
 
         return $result;
