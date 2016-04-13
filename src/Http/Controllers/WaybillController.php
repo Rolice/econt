@@ -1,25 +1,23 @@
 <?php
 namespace Rolice\Econt\Http\Controllers;
 
-use DateTime;
-
 use App;
-use Input;
-
 use App\Http\Controllers\Controller;
+use DateTime;
+use Input;
 use League\Flysystem\Exception;
 use Rolice\Econt\Components\CourierRequest;
 use Rolice\Econt\Components\Loading;
-use Rolice\Econt\Exceptions\EcontException;
-use Rolice\Econt\Http\Requests\CalculateRequest;
-use Rolice\Econt\Http\Requests\WaybillRequest;
-use Rolice\Econt\Models\Office;
-use Rolice\Econt\Models\Settlement;
 use Rolice\Econt\Components\Payment;
 use Rolice\Econt\Components\Receiver;
 use Rolice\Econt\Components\Sender;
 use Rolice\Econt\Components\Services;
 use Rolice\Econt\Components\Shipment;
+use Rolice\Econt\Exceptions\EcontException;
+use Rolice\Econt\Http\Requests\CalculateRequest;
+use Rolice\Econt\Http\Requests\WaybillRequest;
+use Rolice\Econt\Models\Office;
+use Rolice\Econt\Models\Settlement;
 use Rolice\Econt\Models\Street;
 use Rolice\Econt\Waybill;
 
@@ -152,6 +150,12 @@ class WaybillController extends Controller
 
     protected function _shipment()
     {
+        $instruction_returns = Input::get('shipment.instruction_returns');
+
+        if (!in_array($instruction_returns, [Shipment::RETURNS, Shipment::SHIPPING_RETURNS])) {
+            $instruction_returns = null;
+        }
+
         $shipment = new Shipment;
 
         $shipment->envelope_num = Input::get('shipment.num');
@@ -161,6 +165,7 @@ class WaybillController extends Controller
         $shipment->weight = (float)Input::get('shipment.weight');
         $shipment->pay_after_accept = (int)!!Input::get('shipment.pay_after_accept');
         $shipment->pay_after_test = (int)!!Input::get('shipment.pay_after_test');
+        $shipment->instruction_returns = $instruction_returns;
         $shipment->invoice_before_pay_CD = (int)!!Input::get('shipment.invoice_before_pay');
 
         $shipment->setTrariffSubCode(Input::get('sender.pickup'), Input::get('receiver.pickup'));

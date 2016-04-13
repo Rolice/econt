@@ -16,7 +16,7 @@ class Services implements ComponentInterface
     public $oc;
     public $oc_currency;
     public $cd;
-    public $cd_curency;
+    public $cd_currency;
     public $cd_agreement_num;
     public $pack1;
     public $pack2;

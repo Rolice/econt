@@ -6,6 +6,9 @@ class Shipment implements ComponentInterface
 
     use Serializable;
 
+    const SHIPPING_RETURNS = 'shipping_returns';
+    const RETURNS = 'returns';
+
     public $weight;
     public $currency;
     public $envelope_num;
@@ -17,6 +20,7 @@ class Shipment implements ComponentInterface
     public $tariff_sub_code;
     public $pay_after_accept;
     public $pay_after_test;
+    public $instruction_returns;
     public $invoice_before_pay_CD;
 
     public function setTrariffSubCode($sender_pickup, $receiver_pickup)
