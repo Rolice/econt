@@ -62,9 +62,7 @@ class WaybillController extends Controller
                 break;
         }
 
-        $loading->instructions = [
-            new Instruction()
-        ];
+        $loading->instructions = [ 'e' => $instruction];
 
         return Waybill::issue($loading);
     }

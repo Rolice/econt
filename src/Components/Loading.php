@@ -44,6 +44,13 @@ class Loading implements ComponentInterface
     protected $services;
 
     /**
+     * The instructions set for this load
+     * @todo Complete this functionality. This is not complete feature but hot-fix for required new functionality.
+     * @var array
+     */
+    public $instructions;
+
+    /**
      * The courier request for this load
      * @var CourierRequest
      */
@@ -62,7 +69,6 @@ class Loading implements ComponentInterface
         $this->shipment = $shipment;
         $this->payment = $payment;
         $this->services = $services;
-        $this->instructions = new Instructions;
 
         if ($courier) {
             $this->courier_request = $courier;
