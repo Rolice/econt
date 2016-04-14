@@ -62,6 +62,7 @@ class Loading implements ComponentInterface
         $this->shipment = $shipment;
         $this->payment = $payment;
         $this->services = $services;
+        $this->instructions = new Instructions;
 
         if ($courier) {
             $this->courier_request = $courier;

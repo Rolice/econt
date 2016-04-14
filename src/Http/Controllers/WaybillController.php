@@ -12,6 +12,7 @@ use Rolice\Econt\Components\Payment;
 use Rolice\Econt\Components\Receiver;
 use Rolice\Econt\Components\Sender;
 use Rolice\Econt\Components\Services;
+use Rolice\Econt\Components\Instruction;
 use Rolice\Econt\Components\Shipment;
 use Rolice\Econt\Exceptions\EcontException;
 use Rolice\Econt\Http\Requests\CalculateRequest;
@@ -37,7 +38,33 @@ class WaybillController extends Controller
             App::make('Econt')->setCredentials($username, $password);
         }
 
+
         $loading = new Loading($sender, $receiver, $shipment, $payment, $services, $courier);
+
+        $instruction = new Instruction;
+        $instruction->type = Instruction::TYPE_RETURN;
+        $instruction->delivery_fail_action = Instruction::FAIL_ACTION_RETURN_SENDER;
+
+        switch(Input::get('shipment.instruction_returns')) {
+            case Shipment::RETURNS:
+                $instruction->reject_delivery_payment_side = Receiver::SIDE;
+                $instruction->reject_return_payment_side = Sender::SIDE;
+                break;
+
+            case Shipment::SHIPPING_RETURNS:
+                $instruction->reject_delivery_payment_side = Sender::SIDE;
+                $instruction->reject_return_payment_side = Sender::SIDE;
+                break;
+
+            default:
+                $instruction->reject_delivery_payment_side = Receiver::SIDE;
+                $instruction->reject_return_payment_side = Receiver::SIDE;
+                break;
+        }
+
+        $loading->instructions = [
+            new Instruction()
+        ];
 
         return Waybill::issue($loading);
     }
