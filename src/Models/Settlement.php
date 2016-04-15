@@ -1,9 +1,10 @@
 <?php
 namespace Rolice\Econt\Models;
 
+use App;
 use Config;
-
 use Illuminate\Database\Eloquent\Model;
+use Lang;
 use Rolice\Econt\Exceptions\EcontException;
 use Rolice\Econt\ImportInterface;
 
@@ -49,7 +50,7 @@ class Settlement extends Model implements ImportInterface
      * Attributes dynamically-appended to the model
      * @var array
      */
-    protected $appends = [];
+    protected $appends = ['formatted', 'reference'];
 
     public function __construct($attributes = [])
     {
@@ -132,8 +133,8 @@ class Settlement extends Model implements ImportInterface
 
         $service_days = '';
 
-        for($i = 1; $i <= 7; $i++) {
-            $service_days = (isset($data['service_days']["day$i"]) ? (int) !!$data['service_days']["day$i"] : 0) . $service_days;
+        for ($i = 1; $i <= 7; $i++) {
+            $service_days = (isset($data['service_days']["day$i"]) ? (int)!!$data['service_days']["day$i"] : 0) . $service_days;
         }
 
         $service_days = 0 . $service_days;
@@ -159,6 +160,17 @@ class Settlement extends Model implements ImportInterface
         if (!$this->save()) {
             throw new EcontException("Error importing settlement {$this->id}, named {$this->name} with type {$this->type}.");
         }
+    }
+
+    public function getFormattedAttribute()
+    {
+        return Lang::get('econt::econt.settlement.type.' . $this->type)
+        . " {$this->{'bg' == App::getLocale() ? 'name' : 'name_en'}} ({$this->post_code})";
+    }
+
+    public function getReferenceAttribute()
+    {
+        return $this->{'bg' == App::getLocale() ? 'name' : 'name_en'};
     }
 
 }

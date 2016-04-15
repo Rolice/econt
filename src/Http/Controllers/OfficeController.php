@@ -21,7 +21,7 @@ class OfficeController extends Controller
 
     public function show($id)
     {
-        return Office::findOrNew($id);
+        return Office::with('Settlement')->findOrNew($id);
     }
 
     public function dropdown()

@@ -36,13 +36,8 @@ class SettlementController extends Controller
         $result = [];
 
         foreach ($settlements as $settlement) {
-            $name_col = 'bg' === App::getLocale() ? 'name' : 'name_en';
-            $entry = [ 'id' => $settlement->id, 'name' => $settlement->$name_col ];
-
-            $entry['name'] = "{$entry['name']} ({$settlement->post_code})";
-            $entry['name'] = Lang::get('econt::econt.settlement.type.' . $settlement->type) . ' ' . $entry['name'];
-
-            $entry['ref'] = $settlement->$name_col;
+            $entry = [ 'id' => $settlement->id, 'name' => $settlement->formatted ];
+            $entry['ref'] = $settlement->reference;
 
             $result[] = (object) $entry;
         }
