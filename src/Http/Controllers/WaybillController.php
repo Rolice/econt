@@ -7,12 +7,12 @@ use DateTime;
 use Input;
 use League\Flysystem\Exception;
 use Rolice\Econt\Components\CourierRequest;
+use Rolice\Econt\Components\Instruction;
 use Rolice\Econt\Components\Loading;
 use Rolice\Econt\Components\Payment;
 use Rolice\Econt\Components\Receiver;
 use Rolice\Econt\Components\Sender;
 use Rolice\Econt\Components\Services;
-use Rolice\Econt\Components\Instruction;
 use Rolice\Econt\Components\Shipment;
 use Rolice\Econt\Exceptions\EcontException;
 use Rolice\Econt\Http\Requests\CalculateRequest;
@@ -45,7 +45,7 @@ class WaybillController extends Controller
         $instruction->type = Instruction::TYPE_RETURN;
         $instruction->delivery_fail_action = Instruction::FAIL_ACTION_RETURN_SENDER;
 
-        switch(Input::get('shipment.instruction_returns')) {
+        switch (Input::get('shipment.instruction_returns')) {
             case Shipment::RETURNS:
                 $instruction->reject_delivery_payment_side = Receiver::SIDE;
                 $instruction->reject_return_payment_side = Sender::SIDE;
@@ -62,7 +62,19 @@ class WaybillController extends Controller
                 break;
         }
 
-        $loading->instructions = [ 'e' => $instruction];
+        $decline_delivery = Input::get('instructions.reject_delivery_payment_side');
+        $decline_returns = Input::get('instructions.reject_return_payment_side');
+
+        if ($decline_delivery && in_array($decline_delivery, [Sender::SIDE, Receiver::SIDE])) {
+            $instruction->reject_delivery_payment_side = $decline_delivery;
+        }
+
+        if ($decline_returns && in_array($decline_returns, [Sender::SIDE, Receiver::SIDE])) {
+            $instruction->reject_return_payment_side = $decline_returns;
+        }
+
+
+        $loading->instructions = ['e' => $instruction];
 
         return Waybill::issue($loading);
     }
