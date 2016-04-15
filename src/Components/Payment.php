@@ -21,10 +21,11 @@ class Payment implements ComponentInterface
     public $share_percent;
     public $key_word;
 
-    public function __construct($side = self::SENDER, $method = self::COD)
+    public function __construct($side = self::SENDER, $method = self::COD, $key_word = null)
     {
         $this->side = $side;
         $this->method = $method;
+        $this->key_word = $key_word;
     }
 
 }

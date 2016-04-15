@@ -102,6 +102,7 @@ class WaybillController extends Controller
 
         $sender = new Sender;
         $sender->name = Input::get('sender.name');
+        $sender->name_person = Input::get('sender.name_person');
         $sender->city = $settlement->name;
         $sender->post_code = $settlement->post_code;
         $sender->phone_num = Input::get('sender.phone');
@@ -234,7 +235,16 @@ class WaybillController extends Controller
 
     protected function _payment()
     {
-        $payment = new Payment(PAYMENT::RECEIVER === Input::get('payment.side') ? Payment::RECEIVER : Payment::SENDER);
+        $side = Payment::RECEIVER === Input::get('payment.side') ? Payment::RECEIVER : Payment::SENDER;
+        $method = Payment::COD;
+        $key_word = Input::get('payment.credit');
+
+        if ($key_word && Payment::SENDER == $side) {
+            $method = Payment::CREDIT;
+        }
+
+        $payment = new Payment($side, $method, $key_word);
+
         return $payment;
     }
 
