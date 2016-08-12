@@ -1,15 +1,15 @@
 <?php
 namespace Rolice\Econt\Commands;
 
-use DB;
 use App;
+use DB;
 use Illuminate\Console\Command;
-
+use Illuminate\Support\Arr;
 use Rolice\Econt\Models\Neighbourhood;
+use Rolice\Econt\Models\Office;
+use Rolice\Econt\Models\Region;
 use Rolice\Econt\Models\Settlement;
 use Rolice\Econt\Models\Street;
-use Rolice\Econt\Models\Region;
-use Rolice\Econt\Models\Office;
 use Rolice\Econt\Models\Zone;
 
 class Sync extends Command
@@ -36,27 +36,31 @@ class Sync extends Command
      */
     public function handle()
     {
+        $time = time();
         DB::connection('econt')->disableQueryLog();
 
-        $this->comment(PHP_EOL . 'Importing zones... Please wait.');
+        $this->comment(PHP_EOL . 'Starting...');
+
+        $this->comment(PHP_EOL . 'Importing zones and settlements... Please wait.');
 
         Zone::whereRaw(1)->delete();
+        Settlement::whereRaw(1)->delete();
 
         foreach (App::make('Econt')->zones() as $zone) {
             (new Zone)->import($zone);
+
+            $zone_id = Arr::has($zone, 'id') ? Arr::get($zone, 'id') : 0;
+
+            foreach (App::make('Econt')->settlements($zone_id) as $settlement) {
+                if (!is_array($settlement)) {
+                    continue;
+                }
+
+                (new Settlement)->import($settlement);
+            }
         }
 
-        $this->comment(PHP_EOL . 'Zones imported successfully.');
-
-        $this->comment(PHP_EOL . 'Importing settlements... Please wait.');
-
-        Settlement::whereRaw(1)->delete();
-
-        foreach (App::make('Econt')->settlements() as $settlement) {
-            (new Settlement)->import($settlement);
-        }
-
-        $this->comment(PHP_EOL . 'Settlements imported successfully.');
+        $this->comment(PHP_EOL . 'Zones and settlements imported successfully.');
 
         $this->comment(PHP_EOL . 'Importing regions... Please wait.');
 
@@ -97,6 +101,8 @@ class Sync extends Command
         }
 
         $this->comment(PHP_EOL . 'Offices imported successfully.' . PHP_EOL);
+
+        $this->comment(PHP_EOL . sprintf('Finished in %f minutes.', (time() - $time) / 60));
     }
 
 }

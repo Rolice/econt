@@ -13,7 +13,7 @@ use Rolice\Econt\Exceptions\EcontException;
 class Endpoint
 {
     const PARCEL = 'http://www.econt.com/e-econt/xml_parcel_import2.php';
-    const SERVICE = 'http://www.econt.com/e-econt/xml_service_tool.php';
+    const SERVICE = 'https://www.econt.com/e-econt/xml_service_tool.php';
 
     const PARCEL_DEMO = 'http://demo.econt.com/e-econt/xml_parcel_import2.php';
     const SERVICE_DEMO = 'http://demo.econt.com/e-econt/xml_service_tool.php';

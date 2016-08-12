@@ -5,9 +5,9 @@ namespace Rolice\Econt;
 use App;
 use Config;
 use Exception;
-use SimpleXMLElement;
-use Rolice\Econt\Exceptions\EcontException;
 use Rolice\Econt\Components\ComponentInterface;
+use Rolice\Econt\Exceptions\EcontException;
+use SimpleXMLElement;
 
 /**
  * Class Econt
@@ -79,12 +79,12 @@ class Econt
     protected function build(SimpleXMLElement $xml, $data)
     {
         foreach ($data as $key => $value) {
-            if($value instanceof ComponentInterface) {
+            if ($value instanceof ComponentInterface) {
                 $key = $value->tag();
                 $value = $value->toArray();
             }
 
-            if($value instanceof SimpleXMLElement) {
+            if ($value instanceof SimpleXMLElement) {
                 $xml->addChild($key, $value);
                 continue;
             }
@@ -182,12 +182,20 @@ class Econt
         return $result['zones']['e'];
     }
 
-    public final function settlements()
+    public final function settlements($zone_id = null)
     {
-        $result = $this->request(
-            RequestType::CITIES,
-            [RequestType::CITIES => ['id_zone' => 'all', 'report_type' => 'all']]
-        );
+        try {
+            $result = $this->request(
+                RequestType::CITIES,
+                [RequestType::CITIES => ['id_zone' => $zone_id, 'report_type' => 'all']]
+            );
+        } catch (EcontException $e) {
+            return [];
+        }
+
+        if (isset($result['cities']) && empty($result['cities'])) {
+            return [];
+        }
 
         if (!isset($result['cities']['e'])) {
             throw new EcontException('Could not receive correct settlements.');
