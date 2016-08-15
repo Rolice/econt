@@ -38,6 +38,7 @@ class SettlementController extends Controller
         foreach ($settlements as $settlement) {
             $entry = [ 'id' => $settlement->id, 'name' => $settlement->formatted ];
             $entry['ref'] = $settlement->reference;
+            $entry['post_code'] = $settlement->post_code;
 
             $result[] = (object) $entry;
         }
