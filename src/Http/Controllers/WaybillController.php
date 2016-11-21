@@ -255,7 +255,7 @@ class WaybillController extends Controller
         $oc = (float)Input::get('services.oc');
         $oc_currency = Input::get('services.oc_currency');
         $cd_currency = Input::get('services.cd_currency');
-
+		$cd_agreement_num = Input::get('services.cd_agreement_num');
 
         $services = new Services;
         $services->dp = $dp ? 'ON' : null;
@@ -265,6 +265,8 @@ class WaybillController extends Controller
 
         $services->cd = 0 < $cd && preg_match('#[A-Z]{3}#', $cd_currency) ? $cd : null;
         $services->cd_currency = 0 < $cd && preg_match('#[A-Z]{3}#', $cd_currency) ? $cd_currency : null;
+		
+        $services->cd_agreement_num = $cd_agreement_num;
 
         return $services;
     }
