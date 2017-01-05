@@ -1,14 +1,14 @@
 {
-  "name": "rolice/econt",
+  "name": "asenata84/econt",
   "description": "Econt courier API integration in composer package",
   "type": "library",
-  "version": "1.0",
+  "version": "1.0.1",
   "minimum-stability": "stable",
   "license": "MIT",
   "authors": [
     {
-      "name": "Lyubomir Gardev",
-      "email": "rolice@intellisys.org"
+      "name": "Yoo Yoo",
+      "email": "yoo@foo.bar"
     }
   ],
   "require": {
@@ -22,14 +22,14 @@
   },
   "autoload": {
     "psr-4": {
-      "Rolice\\Econt\\": "src",
-      "Rolice\\Econt\\Models\\": "src/Models/",
-      "Rolice\\Econt\\Commands\\": "src/Commands/",
-      "Rolice\\Econt\\Components\\": "src/Components/",
-      "Rolice\\Econt\\Exceptions\\": "src/Exceptions/"
+      "asenata84\\Econt\\": "src",
+      "asenata84\\Econt\\Models\\": "src/Models/",
+      "asenata84\\Econt\\Commands\\": "src/Commands/",
+      "asenata84\\Econt\\Components\\": "src/Components/",
+      "asenata84\\Econt\\Exceptions\\": "src/Exceptions/"
     }
   },
   "autoload-dev": {
-    "psr-4": { "Rolice\\Econt\\Test\\": "tests/" }
+    "psr-4": { "asenata84\\Econt\\Test\\": "tests/" }
   }
 }
