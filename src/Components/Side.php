@@ -28,5 +28,7 @@ abstract class Side implements ComponentInterface
     public $street_other;
     public $phone_num;
     public $sms_no;
+    public $phone;
+    public $email;
 
 }

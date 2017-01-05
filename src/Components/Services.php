@@ -27,5 +27,6 @@ class Services implements ComponentInterface
     public $pack7;
     public $pack8;
     public $ref;
-
+    public $cd_type;
+    public $cd_pay_options;
 }
